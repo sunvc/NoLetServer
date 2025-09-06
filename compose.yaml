@@ -1,7 +1,7 @@
 
 services:
   NoLetServer:
-    image: ghcr.io/uuneo/noword:latest
+    image: ghcr.io/uuneo/nolet:latest
     container_name: NoLetServer
     restart: always
     ports:

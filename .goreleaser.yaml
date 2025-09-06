@@ -1,6 +1,6 @@
 version: 2
 
-project_name: NoWord
+project_name: NoLet
 
 builds:
   - id: darwin
@@ -74,7 +74,7 @@ archives:
 release:
   github:
     owner: uuneo
-    name: NoWordServer
+    name: NoLetServer
 
 checksum:
   name_template: "checksums.txt"
