@@ -1,4 +1,4 @@
-# NoWordsServer
+# NoLetServer
 
 [中文](./README.md) | [English](./README_EN.md) | [한국어](./README_KR.md)
 
@@ -19,10 +19,10 @@ GitHub Releasesページからプリコンパイルされたバイナリをダ�
 5. プログラムを実行：
    ```bash
    # Linux/macOS
-   ./NoWord --config your_config.yaml
+   ./NoLetServer --config your_config.yaml
    
    # Windows
-   NoWord.exe --config your_config.yaml
+   NoLetServer.exe --config your_config.yaml
    ```
 
 ### Dockerの使用
@@ -31,17 +31,17 @@ GitHub Releasesページからプリコンパイルされたバイナリをダ�
 
 このプロジェクトでは、以下のDockerイメージアドレスを提供しています：
 
-- Docker Hub: `sunvx/noword:latest`
-- GitHub Container Registry: `ghcr.io/uuneo/noword:latest`
+- Docker Hub: `sunvx/nolet:latest`
+- GitHub Container Registry: `ghcr.io/uuneo/nolet:latest`
 
 以下のコマンドでイメージをプルできます：
 
 ```bash
 # Docker Hubからプル
-docker pull sunvx/noword:latest
+docker pull sunvx/nolet:latest
 
 # または、GitHub Container Registryからプル
-docker pull ghcr.io/uuneo/noword:latest
+docker pull ghcr.io/uuneo/nolet:latest
 ```
 
 #### Docker Composeの使用
@@ -51,7 +51,7 @@ docker pull ghcr.io/uuneo/noword:latest
 ```yaml
 services:
   NoLetServer:
-    image: ghcr.io/uuneo/noword:latest
+    image: ghcr.io/uuneo/nolet:latest
     container_name: NoLetServer
     restart: always
     ports:
@@ -79,7 +79,7 @@ system:
   addr: "0.0.0.0:8080"      # サーバーリスニングアドレス
   url_prefix: "/"           # サービスURLプレフィックス
   data: "./data"            # データストレージディレクトリ
-  name: "NoWord"            # サービス名
+  name: "NoLetServer"            # サービス名
   dsn: ""                   # MySQL DSN接続文字列
   cert: ""                  # TLS証明書パス
   key: ""                   # TLS証明書秘密鍵パス
@@ -117,26 +117,26 @@ apple:
 
 | パラメータ | 環境変数 | 説明 | デフォルト値 |
 |------|----------|------|--------|
-| `--addr` | `NOWORDS_SERVER_ADDRESS` | サーバーリスニングアドレス | `0.0.0.0:8080` |
-| `--url-prefix` | `NOWORDS_SERVER_URL_PREFIX` | サービスURLプレフィックス | `/` |
-| `--dir` | `NOWORDS_SERVER_DATA_DIR` | データストレージディレクトリ | `./data` |
-| `--dsn` | `NOWORDS_SERVER_DSN` | MySQL DSN、形式：`user:pass@tcp(host)/dbname` | 空 |
-| `--cert` | `NOWORDS_SERVER_CERT` | TLS証明書パス | 空 |
-| `--key` | `NOWORDS_SERVER_KEY` | TLS証明書秘密鍵パス | 空 |
-| `--reduce-memory-usage` | `NOWORDS_SERVER_REDUCE_MEMORY_USAGE` | メモリ使用量を削減（CPU消費量が増加） | `false` |
-| `--user, -u` | `NOWORDS_SERVER_BASIC_AUTH_USER` | 基本認証ユーザー名 | 空 |
-| `--password, -p` | `NOWORDS_SERVER_BASIC_AUTH_PASSWORD` | 基本認証パスワード | 空 |
-| `--proxy-header` | `NOWORDS_SERVER_PROXY_HEADER` | HTTPヘッダーのリモートIPアドレスソース | 空 |
-| `--max-batch-push-count` | `NOWORDS_SERVER_MAX_BATCH_PUSH_COUNT` | バッチプッシュの最大数、`-1`は無制限 | `-1` |
-| `--max-apns-client-count` | `NOWORDS_SERVER_MAX_APNS_CLIENT_COUNT` | APNsクライアント接続の最大数 | `1` |
-| `--admins` | `NOWORDS_SERVER_ADMINS` | 管理者IDリスト | 空 |
-| `--debug` | `NOWORDS_DEBUG` | デバッグモードを有効にする | `false` |
-| `--apns-private-key` | `NOWORDS_APPLE_APNS_PRIVATE_KEY` | APNs秘密鍵パス | 空 |
-| `--topic` | `NOWORDS_APPLE_TOPIC` | APNs Topic | 空 |
-| `--key-id` | `NOWORDS_APPLE_KEY_ID` | APNs Key ID | 空 |
-| `--team-id` | `NOWORDS_APPLE_TEAM_ID` | APNs Team ID | 空 |
-| `--develop, --dev` | `NOWORDS_APPLE_DEVELOP` | APNs開発環境を有効にする | `false` |
-| `--Expired, --ex` | `NOWORDS_EXPIRED_TIME` | 音声の有効期限（秒） | `120` |
+| `--addr` | `NOLET_SERVER_ADDRESS` | サーバーリスニングアドレス | `0.0.0.0:8080` |
+| `--url-prefix` | `NOLET_SERVER_URL_PREFIX` | サービスURLプレフィックス | `/` |
+| `--dir` | `NOLET_SERVER_DATA_DIR` | データストレージディレクトリ | `./data` |
+| `--dsn` | `NOLET_SERVER_DSN` | MySQL DSN、形式：`user:pass@tcp(host)/dbname` | 空 |
+| `--cert` | `NOLET_SERVER_CERT` | TLS証明書パス | 空 |
+| `--key` | `NOLET_SERVER_KEY` | TLS証明書秘密鍵パス | 空 |
+| `--reduce-memory-usage` | `NOLET_SERVER_REDUCE_MEMORY_USAGE` | メモリ使用量を削減（CPU消費量が増加） | `false` |
+| `--user, -u` | `NOLET_SERVER_BASIC_AUTH_USER` | 基本認証ユーザー名 | 空 |
+| `--password, -p` | `NOLET_SERVER_BASIC_AUTH_PASSWORD` | 基本認証パスワード | 空 |
+| `--proxy-header` | `NOLET_SERVER_PROXY_HEADER` | HTTPヘッダーのリモートIPアドレスソース | 空 |
+| `--max-batch-push-count` | `NOLET_SERVER_MAX_BATCH_PUSH_COUNT` | バッチプッシュの最大数、`-1`は無制限 | `-1` |
+| `--max-apns-client-count` | `NOLET_SERVER_MAX_APNS_CLIENT_COUNT` | APNsクライアント接続の最大数 | `1` |
+| `--admins` | `NOLET_SERVER_ADMINS` | 管理者IDリスト | 空 |
+| `--debug` | `NOLET_DEBUG` | デバッグモードを有効にする | `false` |
+| `--apns-private-key` | `NOLET_APPLE_APNS_PRIVATE_KEY` | APNs秘密鍵パス | 空 |
+| `--topic` | `NOLET_APPLE_TOPIC` | APNs Topic | 空 |
+| `--key-id` | `NOLET_APPLE_KEY_ID` | APNs Key ID | 空 |
+| `--team-id` | `NOLET_APPLE_TEAM_ID` | APNs Team ID | 空 |
+| `--develop, --dev` | `NOLET_APPLE_DEVELOP` | APNs開発環境を有効にする | `false` |
+| `--Expired, --ex` | `NOLET_EXPIRED_TIME` | 音声の有効期限（秒） | `120` |
 | `--help, -h` | - | ヘルプ情報を表示 | - |
 | `--config, -c` | - | 設定ファイルパスを指定 | - |
 

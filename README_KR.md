@@ -1,4 +1,4 @@
-# NoWordsServer
+# NoLetServer
 
 [中文](./README.md) | [English](./README_EN.md) | [日本語](./README_JP.md)
 
@@ -19,10 +19,10 @@ GitHub Releases 페이지에서 미리 컴파일된 바이너리를 다운로드
 5. 프로그램 실행:
    ```bash
    # Linux/macOS
-   ./NoWord --config your_config.yaml
+   ./NoLetServer --config your_config.yaml
    
    # Windows
-   NoWord.exe --config your_config.yaml
+   NoLetServer.exe --config your_config.yaml
    ```
 
 ### Docker 사용
@@ -31,17 +31,17 @@ GitHub Releases 페이지에서 미리 컴파일된 바이너리를 다운로드
 
 이 프로젝트는 다음 Docker 이미지 주소를 제공합니다:
 
-- Docker Hub: `sunvx/noword:latest`
-- GitHub Container Registry: `ghcr.io/uuneo/noword:latest`
+- Docker Hub: `sunvx/nolet:latest`
+- GitHub Container Registry: `ghcr.io/uuneo/nolet:latest`
 
 다음 명령으로 이미지를 가져올 수 있습니다:
 
 ```bash
 # Docker Hub에서 가져오기
-docker pull sunvx/noword:latest
+docker pull sunvx/nolet:latest
 
 # 또는 GitHub Container Registry에서 가져오기
-docker pull ghcr.io/uuneo/noword:latest
+docker pull ghcr.io/uuneo/nolet:latest
 ```
 
 #### Docker Compose 사용
@@ -51,7 +51,7 @@ docker pull ghcr.io/uuneo/noword:latest
 ```yaml
 services:
   NoLetServer:
-    image: ghcr.io/uuneo/noword:latest
+    image: ghcr.io/uuneo/nolet:latest
     container_name: NoLetServer
     restart: always
     ports:
@@ -79,7 +79,7 @@ system:
   addr: "0.0.0.0:8080"      # 서버 리스닝 주소
   url_prefix: "/"           # 서비스 URL 접두사
   data: "./data"            # 데이터 저장 디렉토리
-  name: "NoWord"            # 서비스 이름
+  name: "NoLetServer"            # 서비스 이름
   dsn: ""                   # MySQL DSN 연결 문자열
   cert: ""                  # TLS 인증서 경로
   key: ""                   # TLS 인증서 개인 키 경로
@@ -117,26 +117,26 @@ apple:
 
 | 매개변수 | 환경 변수 | 설명 | 기본값 |
 |------|----------|------|--------|
-| `--addr` | `NOWORDS_SERVER_ADDRESS` | 서버 리스닝 주소 | `0.0.0.0:8080` |
-| `--url-prefix` | `NOWORDS_SERVER_URL_PREFIX` | 서비스 URL 접두사 | `/` |
-| `--dir` | `NOWORDS_SERVER_DATA_DIR` | 데이터 저장 디렉토리 | `./data` |
-| `--dsn` | `NOWORDS_SERVER_DSN` | MySQL DSN, 형식: `user:pass@tcp(host)/dbname` | 비어 있음 |
-| `--cert` | `NOWORDS_SERVER_CERT` | TLS 인증서 경로 | 비어 있음 |
-| `--key` | `NOWORDS_SERVER_KEY` | TLS 인증서 개인 키 경로 | 비어 있음 |
-| `--reduce-memory-usage` | `NOWORDS_SERVER_REDUCE_MEMORY_USAGE` | 메모리 사용량 감소(CPU 사용량 증가) | `false` |
-| `--user, -u` | `NOWORDS_SERVER_BASIC_AUTH_USER` | 기본 인증 사용자 이름 | 비어 있음 |
-| `--password, -p` | `NOWORDS_SERVER_BASIC_AUTH_PASSWORD` | 기본 인증 비밀번호 | 비어 있음 |
-| `--proxy-header` | `NOWORDS_SERVER_PROXY_HEADER` | HTTP 헤더의 원격 IP 주소 소스 | 비어 있음 |
-| `--max-batch-push-count` | `NOWORDS_SERVER_MAX_BATCH_PUSH_COUNT` | 배치 푸시 최대 수, `-1`은 무제한 | `-1` |
-| `--max-apns-client-count` | `NOWORDS_SERVER_MAX_APNS_CLIENT_COUNT` | APNs 클라이언트 연결 최대 수 | `1` |
-| `--admins` | `NOWORDS_SERVER_ADMINS` | 관리자 ID 목록 | 비어 있음 |
-| `--debug` | `NOWORDS_DEBUG` | 디버그 모드 활성화 | `false` |
-| `--apns-private-key` | `NOWORDS_APPLE_APNS_PRIVATE_KEY` | APNs 개인 키 경로 | 비어 있음 |
-| `--topic` | `NOWORDS_APPLE_TOPIC` | APNs Topic | 비어 있음 |
-| `--key-id` | `NOWORDS_APPLE_KEY_ID` | APNs Key ID | 비어 있음 |
-| `--team-id` | `NOWORDS_APPLE_TEAM_ID` | APNs Team ID | 비어 있음 |
-| `--develop, --dev` | `NOWORDS_APPLE_DEVELOP` | APNs 개발 환경 활성화 | `false` |
-| `--Expired, --ex` | `NOWORDS_EXPIRED_TIME` | 음성 만료 시간(초) | `120` |
+| `--addr` | `NOLET_SERVER_ADDRESS` | 서버 리스닝 주소 | `0.0.0.0:8080` |
+| `--url-prefix` | `NOLET_SERVER_URL_PREFIX` | 서비스 URL 접두사 | `/` |
+| `--dir` | `NOLET_SERVER_DATA_DIR` | 데이터 저장 디렉토리 | `./data` |
+| `--dsn` | `NOLET_SERVER_DSN` | MySQL DSN, 형식: `user:pass@tcp(host)/dbname` | 비어 있음 |
+| `--cert` | `NOLET_SERVER_CERT` | TLS 인증서 경로 | 비어 있음 |
+| `--key` | `NOLET_SERVER_KEY` | TLS 인증서 개인 키 경로 | 비어 있음 |
+| `--reduce-memory-usage` | `NOLET_SERVER_REDUCE_MEMORY_USAGE` | 메모리 사용량 감소(CPU 사용량 증가) | `false` |
+| `--user, -u` | `NOLET_SERVER_BASIC_AUTH_USER` | 기본 인증 사용자 이름 | 비어 있음 |
+| `--password, -p` | `NOLET_SERVER_BASIC_AUTH_PASSWORD` | 기본 인증 비밀번호 | 비어 있음 |
+| `--proxy-header` | `NOLET_SERVER_PROXY_HEADER` | HTTP 헤더의 원격 IP 주소 소스 | 비어 있음 |
+| `--max-batch-push-count` | `NOLET_SERVER_MAX_BATCH_PUSH_COUNT` | 배치 푸시 최대 수, `-1`은 무제한 | `-1` |
+| `--max-apns-client-count` | `NOLET_SERVER_MAX_APNS_CLIENT_COUNT` | APNs 클라이언트 연결 최대 수 | `1` |
+| `--admins` | `NOLET_SERVER_ADMINS` | 관리자 ID 목록 | 비어 있음 |
+| `--debug` | `NOLET_DEBUG` | 디버그 모드 활성화 | `false` |
+| `--apns-private-key` | `NOLET_APPLE_APNS_PRIVATE_KEY` | APNs 개인 키 경로 | 비어 있음 |
+| `--topic` | `NOLET_APPLE_TOPIC` | APNs Topic | 비어 있음 |
+| `--key-id` | `NOLET_APPLE_KEY_ID` | APNs Key ID | 비어 있음 |
+| `--team-id` | `NOLET_APPLE_TEAM_ID` | APNs Team ID | 비어 있음 |
+| `--develop, --dev` | `NOLET_APPLE_DEVELOP` | APNs 개발 환경 활성화 | `false` |
+| `--Expired, --ex` | `NOLET_EXPIRED_TIME` | 음성 만료 시간(초) | `120` |
 | `--help, -h` | - | 도움말 정보 표시 | - |
 | `--config, -c` | - | 구성 파일 경로 지정 | - |
 

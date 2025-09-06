@@ -1,4 +1,4 @@
-# NoWordsServer
+# NoLetServer
 
 [English](./README_EN.md) | [日本語](./README_JP.md) | [한국어](./README_KR.md)
 
@@ -19,10 +19,10 @@
 5. 运行程序：
    ```bash
    # Linux/macOS
-   ./NoWord --config your_config.yaml
+   ./NoLetServer --config your_config.yaml
    
    # Windows
-   NoWord.exe --config your_config.yaml
+   NoLetServer.exe --config your_config.yaml
    ```
 
 ### 使用Docker
@@ -31,17 +31,17 @@
 
 本项目提供了以下Docker镜像地址：
 
-- Docker Hub: `sunvx/noword:latest`
-- GitHub Container Registry: `ghcr.io/uuneo/noword:latest`
+- Docker Hub: `sunvx/nolet:latest`
+- GitHub Container Registry: `ghcr.io/uuneo/nolet:latest`
 
 您可以使用以下命令拉取镜像：
 
 ```bash
 # 从Docker Hub拉取
-docker pull sunvx/noword:latest
+docker pull sunvx/nolet:latest
 
 # 或从GitHub Container Registry拉取
-docker pull ghcr.io/uuneo/noword:latest
+docker pull ghcr.io/uuneo/nolet:latest
 ```
 
 #### 使用Docker Compose
@@ -51,7 +51,7 @@ docker pull ghcr.io/uuneo/noword:latest
 ```yaml
 services:
   NoLetServer:
-    image: ghcr.io/uuneo/noword:latest
+    image: ghcr.io/uuneo/nolet:latest
     container_name: NoLetServer
     restart: always
     ports:
@@ -79,7 +79,7 @@ system:
   addr: "0.0.0.0:8080"      # 服务器监听地址
   url_prefix: "/"           # 服务URL前缀
   data: "./data"            # 数据存储目录
-  name: "NoWord"            # 服务名称
+  name: "NoLetServer"            # 服务名称
   dsn: ""                   # MySQL DSN连接字符串
   cert: ""                  # TLS证书路径
   key: ""                   # TLS证书私钥路径
@@ -117,26 +117,26 @@ apple:
 
 | 参数 | 环境变量 | 说明 | 默认值 |
 |------|----------|------|--------|
-| `--addr` | `NOWORDS_SERVER_ADDRESS` | 服务器监听地址 | `0.0.0.0:8080` |
-| `--url-prefix` | `NOWORDS_SERVER_URL_PREFIX` | 服务 URL 前缀 | `/` |
-| `--dir` | `NOWORDS_SERVER_DATA_DIR` | 数据存储目录 | `./data` |
-| `--dsn` | `NOWORDS_SERVER_DSN` | MySQL DSN，格式：`user:pass@tcp(host)/dbname` | 空 |
-| `--cert` | `NOWORDS_SERVER_CERT` | TLS 证书路径 | 空 |
-| `--key` | `NOWORDS_SERVER_KEY` | TLS 证书私钥路径 | 空 |
-| `--reduce-memory-usage` | `NOWORDS_SERVER_REDUCE_MEMORY_USAGE` | 降低内存占用（增加 CPU 消耗） | `false` |
-| `--user, -u` | `NOWORDS_SERVER_BASIC_AUTH_USER` | 基础认证用户名 | 空 |
-| `--password, -p` | `NOWORDS_SERVER_BASIC_AUTH_PASSWORD` | 基础认证密码 | 空 |
-| `--proxy-header` | `NOWORDS_SERVER_PROXY_HEADER` | HTTP 头中远程 IP 地址来源 | 空 |
-| `--max-batch-push-count` | `NOWORDS_SERVER_MAX_BATCH_PUSH_COUNT` | 批量推送最大数量，`-1` 表示无限制 | `-1` |
-| `--max-apns-client-count` | `NOWORDS_SERVER_MAX_APNS_CLIENT_COUNT` | 最大 APNs 客户端连接数 | `1` |
-| `--admins` | `NOWORDS_SERVER_ADMINS` | 管理员 ID 列表 | 空 |
-| `--debug` | `NOWORDS_DEBUG` | 启用调试模式 | `false` |
-| `--apns-private-key` | `NOWORDS_APPLE_APNS_PRIVATE_KEY` | APNs 私钥路径 | 空 |
-| `--topic` | `NOWORDS_APPLE_TOPIC` | APNs Topic | 空 |
-| `--key-id` | `NOWORDS_APPLE_KEY_ID` | APNs Key ID | 空 |
-| `--team-id` | `NOWORDS_APPLE_TEAM_ID` | APNs Team ID | 空 |
-| `--develop, --dev` | `NOWORDS_APPLE_DEVELOP` | 启用 APNs 开发环境 | `false` |
-| `--Expired, --ex` | `NOWORDS_EXPIRED_TIME` | 语音过期时间（秒） | `120` |
+| `--addr` | `NOLET_SERVER_ADDRESS` | 服务器监听地址 | `0.0.0.0:8080` |
+| `--url-prefix` | `NOLET_SERVER_URL_PREFIX` | 服务 URL 前缀 | `/` |
+| `--dir` | `NOLET_SERVER_DATA_DIR` | 数据存储目录 | `./data` |
+| `--dsn` | `NOLET_SERVER_DSN` | MySQL DSN，格式：`user:pass@tcp(host)/dbname` | 空 |
+| `--cert` | `NOLET_SERVER_CERT` | TLS 证书路径 | 空 |
+| `--key` | `NOLET_SERVER_KEY` | TLS 证书私钥路径 | 空 |
+| `--reduce-memory-usage` | `NOLET_SERVER_REDUCE_MEMORY_USAGE` | 降低内存占用（增加 CPU 消耗） | `false` |
+| `--user, -u` | `NOLET_SERVER_BASIC_AUTH_USER` | 基础认证用户名 | 空 |
+| `--password, -p` | `NOLET_SERVER_BASIC_AUTH_PASSWORD` | 基础认证密码 | 空 |
+| `--proxy-header` | `NOLET_SERVER_PROXY_HEADER` | HTTP 头中远程 IP 地址来源 | 空 |
+| `--max-batch-push-count` | `NOLET_SERVER_MAX_BATCH_PUSH_COUNT` | 批量推送最大数量，`-1` 表示无限制 | `-1` |
+| `--max-apns-client-count` | `NOLET_SERVER_MAX_APNS_CLIENT_COUNT` | 最大 APNs 客户端连接数 | `1` |
+| `--admins` | `NOLET_SERVER_ADMINS` | 管理员 ID 列表 | 空 |
+| `--debug` | `NOLET_DEBUG` | 启用调试模式 | `false` |
+| `--apns-private-key` | `NOLET_APPLE_APNS_PRIVATE_KEY` | APNs 私钥路径 | 空 |
+| `--topic` | `NOLET_APPLE_TOPIC` | APNs Topic | 空 |
+| `--key-id` | `NOLET_APPLE_KEY_ID` | APNs Key ID | 空 |
+| `--team-id` | `NOLET_APPLE_TEAM_ID` | APNs Team ID | 空 |
+| `--develop, --dev` | `NOLET_APPLE_DEVELOP` | 启用 APNs 开发环境 | `false` |
+| `--Expired, --ex` | `NOLET_EXPIRED_TIME` | 语音过期时间（秒） | `120` |
 | `--help, -h` | - | 显示帮助信息 | - |
 | `--config, -c` | - | 指定配置文件路径 | - |
 
@@ -148,10 +148,10 @@ apple:
 
 2. 指定配置文件路径：
    ```bash
-   ./NoLetServer --config /path/to/your/config.yaml
-   # 或使用简写
-   ./NoLetServer -c /path/to/your/config.yaml
-   ```
+    ./NoLetServer --config /path/to/your/config.yaml
+    # 或使用简写
+    ./NoLetServer -c /path/to/your/config.yaml
+    ```
 
 3. 配置文件与命令行参数混合使用：
    ```bash

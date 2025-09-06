@@ -1,4 +1,4 @@
-# NoWordsServer
+# NoLetServer
 
 [中文](./README.md) | [日本語](./README_JP.md) | [한국어](./README_KR.md)
 
@@ -19,10 +19,10 @@ You can download pre-compiled binaries from the GitHub Releases page:
 5. Run the program:
    ```bash
    # Linux/macOS
-   ./NoWord --config your_config.yaml
+   ./NoLetServer --config your_config.yaml
    
    # Windows
-   NoWord.exe --config your_config.yaml
+   NoLetServer.exe --config your_config.yaml
    ```
 
 ### Using Docker
@@ -31,17 +31,17 @@ You can download pre-compiled binaries from the GitHub Releases page:
 
 This project provides the following Docker image addresses:
 
-- Docker Hub: `sunvx/noword:latest`
-- GitHub Container Registry: `ghcr.io/uuneo/noword:latest`
+- Docker Hub: `sunvx/nolet:latest`
+- GitHub Container Registry: `ghcr.io/uuneo/nolet:latest`
 
 You can pull the image using the following command:
 
 ```bash
 # Pull from Docker Hub
-docker pull sunvx/noword:latest
+docker pull sunvx/nolet:latest
 
 # Or pull from GitHub Container Registry
-docker pull ghcr.io/uuneo/noword:latest
+docker pull ghcr.io/uuneo/nolet:latest
 ```
 
 #### Using Docker Compose
@@ -51,7 +51,7 @@ The `compose.yaml` file in the project root directory is already configured to u
 ```yaml
 services:
   NoLetServer:
-    image: ghcr.io/uuneo/noword:latest
+    image: ghcr.io/uuneo/nolet:latest
     container_name: NoLetServer
     restart: always
     ports:
@@ -79,7 +79,7 @@ system:
   addr: "0.0.0.0:8080"      # Server listening address
   url_prefix: "/"           # Service URL prefix
   data: "./data"            # Data storage directory
-  name: "NoWord"            # Service name
+  name: "NoLetServer"            # Service name
   dsn: ""                   # MySQL DSN connection string
   cert: ""                  # TLS certificate path
   key: ""                   # TLS certificate private key path
@@ -117,26 +117,26 @@ The service can be configured in the following three ways, with priority from hi
 
 | Parameter | Environment Variable | Description | Default Value |
 |------|----------|------|--------|
-| `--addr` | `NOWORDS_SERVER_ADDRESS` | Server listening address | `0.0.0.0:8080` |
-| `--url-prefix` | `NOWORDS_SERVER_URL_PREFIX` | Service URL prefix | `/` |
-| `--dir` | `NOWORDS_SERVER_DATA_DIR` | Data storage directory | `./data` |
-| `--dsn` | `NOWORDS_SERVER_DSN` | MySQL DSN, format: `user:pass@tcp(host)/dbname` | Empty |
-| `--cert` | `NOWORDS_SERVER_CERT` | TLS certificate path | Empty |
-| `--key` | `NOWORDS_SERVER_KEY` | TLS certificate private key path | Empty |
-| `--reduce-memory-usage` | `NOWORDS_SERVER_REDUCE_MEMORY_USAGE` | Reduce memory usage (increases CPU consumption) | `false` |
-| `--user, -u` | `NOWORDS_SERVER_BASIC_AUTH_USER` | Basic authentication username | Empty |
-| `--password, -p` | `NOWORDS_SERVER_BASIC_AUTH_PASSWORD` | Basic authentication password | Empty |
-| `--proxy-header` | `NOWORDS_SERVER_PROXY_HEADER` | Remote IP address source in HTTP header | Empty |
-| `--max-batch-push-count` | `NOWORDS_SERVER_MAX_BATCH_PUSH_COUNT` | Maximum number of batch pushes, `-1` means no limit | `-1` |
-| `--max-apns-client-count` | `NOWORDS_SERVER_MAX_APNS_CLIENT_COUNT` | Maximum number of APNs client connections | `1` |
-| `--admins` | `NOWORDS_SERVER_ADMINS` | Administrator ID list | Empty |
-| `--debug` | `NOWORDS_DEBUG` | Enable debug mode | `false` |
-| `--apns-private-key` | `NOWORDS_APPLE_APNS_PRIVATE_KEY` | APNs private key path | Empty |
-| `--topic` | `NOWORDS_APPLE_TOPIC` | APNs Topic | Empty |
-| `--key-id` | `NOWORDS_APPLE_KEY_ID` | APNs Key ID | Empty |
-| `--team-id` | `NOWORDS_APPLE_TEAM_ID` | APNs Team ID | Empty |
-| `--develop, --dev` | `NOWORDS_APPLE_DEVELOP` | Enable APNs development environment | `false` |
-| `--Expired, --ex` | `NOWORDS_EXPIRED_TIME` | Voice expiration time (seconds) | `120` |
+| `--addr` | `NOLET_SERVER_ADDRESS` | Server listening address | `0.0.0.0:8080` |
+| `--url-prefix` | `NOLET_SERVER_URL_PREFIX` | Service URL prefix | `/` |
+| `--dir` | `NOLET_SERVER_DATA_DIR` | Data storage directory | `./data` |
+| `--dsn` | `NOLET_SERVER_DSN` | MySQL DSN, format: `user:pass@tcp(host)/dbname` | Empty |
+| `--cert` | `NOLET_SERVER_CERT` | TLS certificate path | Empty |
+| `--key` | `NOLET_SERVER_KEY` | TLS certificate private key path | Empty |
+| `--reduce-memory-usage` | `NOLET_SERVER_REDUCE_MEMORY_USAGE` | Reduce memory usage (increases CPU consumption) | `false` |
+| `--user, -u` | `NOLET_SERVER_BASIC_AUTH_USER` | Basic authentication username | Empty |
+| `--password, -p` | `NOLET_SERVER_BASIC_AUTH_PASSWORD` | Basic authentication password | Empty |
+| `--proxy-header` | `NOLET_SERVER_PROXY_HEADER` | Remote IP address source in HTTP header | Empty |
+| `--max-batch-push-count` | `NOLET_SERVER_MAX_BATCH_PUSH_COUNT` | Maximum number of batch pushes, `-1` means no limit | `-1` |
+| `--max-apns-client-count` | `NOLET_SERVER_MAX_APNS_CLIENT_COUNT` | Maximum number of APNs client connections | `1` |
+| `--admins` | `NOLET_SERVER_ADMINS` | Administrator ID list | Empty |
+| `--debug` | `NOLET_DEBUG` | Enable debug mode | `false` |
+| `--apns-private-key` | `NOLET_APPLE_APNS_PRIVATE_KEY` | APNs private key path | Empty |
+| `--topic` | `NOLET_APPLE_TOPIC` | APNs Topic | Empty |
+| `--key-id` | `NOLET_APPLE_KEY_ID` | APNs Key ID | Empty |
+| `--team-id` | `NOLET_APPLE_TEAM_ID` | APNs Team ID | Empty |
+| `--develop, --dev` | `NOLET_APPLE_DEVELOP` | Enable APNs development environment | `false` |
+| `--Expired, --ex` | `NOLET_EXPIRED_TIME` | Voice expiration time (seconds) | `120` |
 | `--help, -h` | - | Display help information | - |
 | `--config, -c` | - | Specify configuration file path | - |
 
