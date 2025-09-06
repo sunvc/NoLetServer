@@ -32,8 +32,8 @@ var (
 func main() {
 
 	app := &cli.Command{
-		Name:    "NowordsServer",
-		Usage:   "Push Server For Nowords",
+		Name:    "NoLetServer",
+		Usage:   "Push Server For NoLet",
 		Flags:   config.Flags(),
 		Authors: []any{"to@uuneo.com"},
 		Action: func(ctx context.Context, command *cli.Command) error {

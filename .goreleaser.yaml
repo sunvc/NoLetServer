@@ -1,6 +1,6 @@
 version: 2
 
-project_name: NoLet
+project_name: NoLetServer
 
 builds:
   - id: darwin
@@ -70,6 +70,7 @@ archives:
         dst: static/
       - LICENSE
       - README.md
+
 
 release:
   github:

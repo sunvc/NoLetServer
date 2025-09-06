@@ -25,6 +25,14 @@ You can download pre-compiled binaries from the GitHub Releases page:
    NoLetServer.exe --config your_config.yaml
    ```
 
+   Common parameters:
+   - `--addr`: Server listening address, default is 0.0.0.0:8080
+   - `--url-prefix`: Service URL prefix, default is /
+   - `--dir`: Data storage directory, default is ./data
+   - `--dsn`: MySQL database connection string
+   - `--debug`: Enable debug mode
+   - `--config, -c`: Specify configuration file path
+
 ### Using Docker
 
 #### Docker Image

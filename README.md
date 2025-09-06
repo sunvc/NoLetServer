@@ -25,6 +25,14 @@
    NoLetServer.exe --config your_config.yaml
    ```
 
+   常用参数：
+   - `--addr`: 服务器监听地址，默认为0.0.0.0:8080
+   - `--url-prefix`: 服务URL前缀，默认为/
+   - `--dir`: 数据存储目录，默认为./data
+   - `--dsn`: MySQL数据库连接字符串
+   - `--debug`: 启用调试模式
+   - `--config, -c`: 指定配置文件路径
+
 ### 使用Docker
 
 #### Docker 镜像
