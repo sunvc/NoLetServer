@@ -16,7 +16,7 @@ var LocalConfig = &model.Config{
 		Addr:               "0.0.0.0:8080",
 		URLPrefix:          "/",
 		DataDir:            "./data",
-		Name:               "NoWord",
+		Name:               "NoLet",
 		DSN:                "",
 		Cert:               "",
 		Key:                "",

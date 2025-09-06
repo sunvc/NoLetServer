@@ -4,7 +4,7 @@ system:
   addr: "0.0.0.0:8080"
   url_prefix: "/"
   data: "./data"
-  name: "NoWord"
+  name: "NoLet"
   dsn: ""
   cert: ""
   key: ""
