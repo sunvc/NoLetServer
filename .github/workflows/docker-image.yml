@@ -55,10 +55,10 @@ jobs:
             BUILD_DATE=${{ steps.vars.outputs.build_date }}
             COMMIT_ID=${{ steps.vars.outputs.commit_id }}
           tags: |
-            sunvx/noword:latest
-            sunvx/noword:${{ env.build_version }}
-            ghcr.io/uuneo/noword:latest
-            ghcr.io/uuneo/noword:${{ env.build_version }}
+            sunvx/nolet:latest
+            sunvx/nolet:${{ env.build_version }}
+            ghcr.io/uuneo/nolet:latest
+            ghcr.io/uuneo/nolet:${{ env.build_version }}
           push: true
 
       - name: Image digest
