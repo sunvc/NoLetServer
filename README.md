@@ -39,23 +39,23 @@
 
 本项目提供了以下Docker镜像地址：
 
-- Docker Hub: `sunvx/nolet:latest`
-- GitHub Container Registry: `ghcr.io/uuneo/nolet:latest`
+- Docker Hub: `sunvc/nolet:latest`
+- GitHub Container Registry: `ghcr.io/sunvc/nolet:latest`
 
 您可以使用以下命令拉取镜像：
 
 ```bash
 # 从Docker Hub拉取
-docker pull sunvx/nolet:latest
+docker pull sunvc/nolet:latest
 
 # 或从GitHub Container Registry拉取
-docker pull ghcr.io/uuneo/nolet:latest
+docker pull ghcr.io/sunvc/nolet:latest
 
 docker run -d --name NoLet-server \
   -p 8080:8080 \
   -v ./data:/data \
   --restart=always \
-  ghcr.io/uuneo/nolet:latest
+  ghcr.io/sunvc/nolet:latest
 ```
 
 #### 使用Docker Compose
@@ -65,7 +65,7 @@ docker run -d --name NoLet-server \
 ```yaml
 services:
   NoLetServer:
-    image: ghcr.io/uuneo/nolet:latest
+    image: ghcr.io/sunvc/nolet:latest
     container_name: NoLetServer
     restart: always
     ports:

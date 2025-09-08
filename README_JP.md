@@ -31,23 +31,23 @@ GitHub Releasesページからプリコンパイルされたバイナリをダ�
 
 このプロジェクトでは、以下のDockerイメージアドレスを提供しています：
 
-- Docker Hub: `sunvx/nolet:latest`
-- GitHub Container Registry: `ghcr.io/uuneo/nolet:latest`
+- Docker Hub: `sunvc/nolet:latest`
+- GitHub Container Registry: `ghcr.io/sunvc/nolet:latest`
 
 以下のコマンドでイメージをプルできます：
 
 ```bash
 # Docker Hubからプル
-docker pull sunvx/nolet:latest
+docker pull sunvc/nolet:latest
 
 # または、GitHub Container Registryからプル
-docker pull ghcr.io/uuneo/nolet:latest
+docker pull ghcr.io/sunvc/nolet:latest
 
 docker run -d --name NoLet-server \
   -p 8080:8080 \
   -v ./data:/data \
   --restart=always \
-  ghcr.io/uuneo/nolet:latest
+  ghcr.io/sunvc/nolet:latest
 ```
 
 #### Docker Composeの使用
@@ -57,7 +57,7 @@ docker run -d --name NoLet-server \
 ```yaml
 services:
   NoLetServer:
-    image: ghcr.io/uuneo/nolet:latest
+    image: ghcr.io/sunvc/nolet:latest
     container_name: NoLetServer
     restart: always
     ports:

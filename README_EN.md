@@ -39,23 +39,23 @@ You can download pre-compiled binaries from the GitHub Releases page:
 
 This project provides the following Docker image addresses:
 
-- Docker Hub: `sunvx/nolet:latest`
-- GitHub Container Registry: `ghcr.io/uuneo/nolet:latest`
+- Docker Hub: `sunvc/nolet:latest`
+- GitHub Container Registry: `ghcr.io/sunvc/nolet:latest`
 
 You can pull the image using the following command:
 
 ```bash
 # Pull from Docker Hub
-docker pull sunvx/nolet:latest
+docker pull sunvc/nolet:latest
 
 # Or pull from GitHub Container Registry
-docker pull ghcr.io/uuneo/nolet:latest
+docker pull ghcr.io/sunvc/nolet:latest
 
 docker run -d --name NoLet-server \
   -p 8080:8080 \
   -v ./data:/data \
   --restart=always \
-  ghcr.io/uuneo/nolet:latest
+  ghcr.io/sunvc/nolet:latest
 ```
 
 #### Using Docker Compose
@@ -65,7 +65,7 @@ The `compose.yaml` file in the project root directory is already configured to u
 ```yaml
 services:
   NoLetServer:
-    image: ghcr.io/uuneo/nolet:latest
+    image: ghcr.io/sunvc/nolet:latest
     container_name: NoLetServer
     restart: always
     ports:

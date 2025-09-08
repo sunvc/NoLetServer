@@ -31,23 +31,23 @@ GitHub Releases 페이지에서 미리 컴파일된 바이너리를 다운로드
 
 이 프로젝트는 다음 Docker 이미지 주소를 제공합니다:
 
-- Docker Hub: `sunvx/nolet:latest`
-- GitHub Container Registry: `ghcr.io/uuneo/nolet:latest`
+- Docker Hub: `sunvc/nolet:latest`
+- GitHub Container Registry: `ghcr.io/sunvc/nolet:latest`
 
 다음 명령으로 이미지를 가져올 수 있습니다:
 
 ```bash
 # Docker Hub에서 가져오기
-docker pull sunvx/nolet:latest
+docker pull sunvc/nolet:latest
 
 # 또는 GitHub Container Registry에서 가져오기
-docker pull ghcr.io/uuneo/nolet:latest
+docker pull ghcr.io/sunvc/nolet:latest
 
 docker run -d --name NoLet-server \
   -p 8080:8080 \
   -v ./data:/data \
   --restart=always \
-  ghcr.io/uuneo/nolet:latest
+  ghcr.io/sunvc/nolet:latest
 ```
 
 #### Docker Compose 사용
@@ -57,7 +57,7 @@ docker run -d --name NoLet-server \
 ```yaml
 services:
   NoLetServer:
-    image: ghcr.io/uuneo/nolet:latest
+    image: ghcr.io/sunvc/nolet:latest
     container_name: NoLetServer
     restart: always
     ports:
