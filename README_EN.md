@@ -50,6 +50,12 @@ docker pull sunvx/nolet:latest
 
 # Or pull from GitHub Container Registry
 docker pull ghcr.io/uuneo/nolet:latest
+
+docker run -d --name NoLet-server \
+  -p 8080:8080 \
+  -v ./data:/data \
+  --restart=always \
+  ghcr.io/uuneo/nolet:latest
 ```
 
 #### Using Docker Compose

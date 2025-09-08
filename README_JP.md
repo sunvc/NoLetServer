@@ -42,6 +42,12 @@ docker pull sunvx/nolet:latest
 
 # または、GitHub Container Registryからプル
 docker pull ghcr.io/uuneo/nolet:latest
+
+docker run -d --name NoLet-server \
+  -p 8080:8080 \
+  -v ./data:/data \
+  --restart=always \
+  ghcr.io/uuneo/nolet:latest
 ```
 
 #### Docker Composeの使用

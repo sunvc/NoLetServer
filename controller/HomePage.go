@@ -26,9 +26,9 @@ func HomeController(c *fiber.Ctx) error {
 		} else {
 
 			if c.Secure() {
-				return "http://" + string(c.Request().Host())
+				return "https://" + string(c.Request().Host())
 			}
-			return "https://" + string(c.Request().Host())
+			return "http://" + string(c.Request().Host())
 		}
 	}()
 	params := c.Queries()
