@@ -7,15 +7,6 @@ type Config struct {
 	Apple  Apple  `mapstructure:"apple" json:"apple" yaml:"apple"`
 }
 
-func (global *Config) Verification(admin string) bool {
-	for _, item := range global.System.Admins {
-		if item == admin {
-			return true
-		}
-	}
-	return false
-}
-
 // System 是 NoLetServer/Bark 服务的配置结构体
 type System struct {
 	User               string        `mapstructure:"user" json:"user" yaml:"user"`
@@ -35,7 +26,6 @@ type System struct {
 	ReadTimeout        time.Duration `mapstructure:"read_timeout" json:"read_timeout" yaml:"read_timeout"`
 	WriteTimeout       time.Duration `mapstructure:"write_timeout" json:"write_timeout" yaml:"write_timeout"`
 	IdleTimeout        time.Duration `mapstructure:"idle_timeout" json:"idle_timeout" yaml:"idle_timeout"`
-	Admins             []string      `mapstructure:"admins" json:"admins" yaml:"admins" `
 	Debug              bool          `mapstructure:"debug" json:"debug" yaml:"debug"`
 	Version            string        `mapstructure:"version" json:"version" yaml:"version"`
 	BuildDate          string        `mapstructure:"build_date" json:"build_date" yaml:"build_date"`
@@ -43,6 +33,7 @@ type System struct {
 	Expired            float64       `mapstructure:"expired" json:"expired" yaml:"expired"`
 	ICPInfo            string        `mapstructure:"icp_info" json:"icp_info" yaml:"icp_info"`
 	TimeZone           string        `mapstructure:"time_zone" json:"time_zone" yaml:"time_zone"`
+	Voice              bool          `mapstructure:"voice" json:"voice" yaml:"voice"`
 }
 
 type Apple struct {
@@ -106,9 +97,6 @@ func (global *Config) SetConfig(conf Config) {
 	if conf.System.IdleTimeout > 0 {
 		global.System.IdleTimeout = conf.System.IdleTimeout
 	}
-	if len(conf.System.Admins) > 0 {
-		global.System.Admins = conf.System.Admins
-	}
 	global.System.Debug = conf.System.Debug
 	if len(conf.System.Version) > 0 {
 		global.System.Version = conf.System.Version
@@ -128,7 +116,7 @@ func (global *Config) SetConfig(conf Config) {
 	if len(conf.System.TimeZone) > 0 {
 		global.System.TimeZone = conf.System.TimeZone
 	}
-
+	global.System.Voice = conf.System.Voice
 	// 检查Apple字段
 	if len(conf.Apple.ApnsPrivateKey) > 0 {
 		global.Apple.ApnsPrivateKey = conf.Apple.ApnsPrivateKey
@@ -143,4 +131,5 @@ func (global *Config) SetConfig(conf Config) {
 		global.Apple.TeamID = conf.Apple.TeamID
 	}
 	global.Apple.Develop = conf.Apple.Develop
+
 }

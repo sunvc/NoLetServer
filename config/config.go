@@ -28,13 +28,13 @@ var LocalConfig = &model.Config{
 		ReadTimeout:        3 * time.Second,
 		WriteTimeout:       3 * time.Second,
 		IdleTimeout:        10 * time.Second,
-		Admins:             []string{},
 		Debug:              false,
 		Version:            "",
 		BuildDate:          "",
 		CommitID:           "",
 		ICPInfo:            "",
 		TimeZone:           "UTC",
+		Voice:              false,
 	},
 	Apple: model.Apple{
 		ApnsPrivateKey: `-----BEGIN PRIVATE KEY-----
@@ -218,16 +218,6 @@ func Flags() []cli.Flag {
 				return nil
 			},
 		},
-		&cli.StringSliceFlag{
-			Name:    "admins",
-			Usage:   "auth admin ids",
-			Sources: cli.EnvVars("NOLET_SERVER_ADMINS"),
-			Value:   []string{},
-			Action: func(ctx context.Context, command *cli.Command, s []string) error {
-				LocalConfig.System.Admins = s
-				return nil
-			},
-		},
 		&cli.BoolFlag{
 			Name:    "debug",
 			Value:   false,
@@ -235,6 +225,17 @@ func Flags() []cli.Flag {
 			Sources: cli.EnvVars("NOLET_DEBUG"),
 			Action: func(ctx context.Context, command *cli.Command, b bool) error {
 				LocalConfig.System.Debug = b
+				return nil
+			},
+		},
+		&cli.BoolFlag{
+			Name:    "voice",
+			Value:   false,
+			Usage:   "Support voice",
+			Sources: cli.EnvVars("NOLET_VOICE"),
+			Hidden:  true,
+			Action: func(ctx context.Context, command *cli.Command, b bool) error {
+				LocalConfig.System.Voice = b
 				return nil
 			},
 		},

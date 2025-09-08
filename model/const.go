@@ -7,7 +7,8 @@ const (
 	AutoCopyDefault  = "0" // 默认自动复制
 	LevelDefault     = "active"
 
-	DeviceKey   = "devicekey"   // 设备key
+	DeviceKey   = "devicekey" // 设备key
+	DeviceKeys  = "devicekeys"
 	DeviceToken = "devicetoken" // 设备token 	// 类别
 	ID          = "id"          // ID
 	Title       = "title"       // 标题

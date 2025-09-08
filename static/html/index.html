@@ -1,25 +1,25 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>无字书 - 智能消息推送</title>
+    <title>无字书 - Smart Message Push</title>
     <link rel="icon" href="/logo.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/logo.svg" />
     <meta name="theme-color" content="#4D6BFE" />
     <meta
       name="description"
-      content="无字书 - AI驱动的消息推送平台，支持端到端加密、自定义服务器"
+      content="无字书 - AI-driven message push platform, supporting end-to-end encryption and custom servers"
     />
-    <meta property="og:title" content="无字书 - 智能消息推送" />
+    <meta property="og:title" content="无字书 - Smart Message Push" />
     <meta
       property="og:description"
-      content="安全、高效的消息推送解决方案，支持AI处理和自定义配置"
+      content="Secure, efficient message push solution, supporting AI processing and custom configuration"
     />
     <meta property="og:image" content="/logo.svg" />
     <meta property="og:url" content="/" />
     <meta name="twitter:card" content="summary" />
-    <!-- 添加更多现代化的字体和图标库 -->
+    <!-- Add more modern fonts and icon libraries -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -864,11 +864,19 @@
               href="https://github.com/uuneo/NoLetServer"
               class="github-link"
               target="_blank"
-              aria-label="GitHub项目地址"
+              aria-label="GitHub Project"
             >
               <i class="bi bi-github"></i>
             </a>
-            <button class="theme-toggle" id="themeToggle" aria-label="切换主题">
+            <a
+              href="https://t.me/PushToMe"
+              class="github-link"
+              target="_blank"
+              aria-label="Telegram Channel"
+            >
+              <i class="bi bi-telegram"></i>
+            </a>
+            <button class="theme-toggle" id="themeToggle" aria-label="Toggle Theme">
               <span class="theme-icon">🌙</span>
             </button>
           </div>
@@ -880,13 +888,13 @@
           <div class="hero-content">
             <div class="hero-qr" style="padding-top: 50px">
               <div class="qr-code" id="qrcode"></div>
-              <p>扫描二维码添加服务器</p>
+              <p>Scan QR code to add server</p>
             </div>
             <div class="hero-text">
-              <h1>重新定义消息推送体验</h1>
+              <h1>Redefining Message Push Experience</h1>
               <p>
-                无字书 一款注重隐私、安全可控的自定义通知推送工具。<br />
-                免费、简单、安全、打开即用
+                无字书 A privacy-focused, secure and controllable custom notification push tool.<br />
+                Free, Simple, Secure, Ready to Use
               </p>
 
               <div class="hero-buttons">
@@ -894,9 +902,9 @@
                   href="https://apps.apple.com/us/app/id6615073345"
                   class="secondary-button"
                 >
-                  前往 App Store 下载
+                  Go to App Store
                 </a>
-                <a href="#" class="secondary-button"> 查看文档 </a>
+                <a href="#" class="secondary-button"> View Documentation </a>
               </div>
             </div>
           </div>
@@ -905,23 +913,23 @@
           <div class="features-grid">
             <div class="feature-card" data-aos="fade-up" data-aos-delay="150">
               <div class="feature-icon"><i class="bi bi-robot"></i></div>
-              <h3>智能AI处理</h3>
-              <p>自动摘要、翻译、内容优化，提升消息质量</p>
+              <h3>Smart AI Processing</h3>
+              <p>Automatic summarization, translation, content optimization, improving message quality</p>
             </div>
             <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
               <div class="feature-icon"><i class="bi bi-shield-lock"></i></div>
-              <h3>端到端加密</h3>
-              <p>AES-256加密传输，保障数据绝对安全</p>
+              <h3>End-to-End Encryption</h3>
+              <p>AES-256 encrypted transmission, ensuring absolute data security</p>
             </div>
             <div class="feature-card" data-aos="fade-up" data-aos-delay="250">
               <div class="feature-icon"><i class="bi bi-file-text"></i></div>
-              <h3>超长消息处理</h3>
-              <p>智能分条发送合并，支持任意长度内容</p>
+              <h3>Long Message Processing</h3>
+              <p>Smart segmentation and merging, supporting content of any length</p>
             </div>
             <div class="feature-card" data-aos="fade-up" data-aos-delay="300">
               <div class="feature-icon"><i class="bi bi-gear"></i></div>
-              <h3>自定义服务器</h3>
-              <p>支持私有部署，灵活配置推送规则</p>
+              <h3>Custom Server</h3>
+              <p>Support for private deployment, flexible push rule configuration</p>
             </div>
           </div>
         </div>
@@ -936,33 +944,17 @@
         </div>
 
         <div class="footer-bottom">
-          <p class="footer-copyright">
-            &copy; 2024 无字书. All rights reserved.
-          </p>
-          <p class="footer-icp">
-            <a
-              href="/terms"
-              style="color: var(--text-light); text-decoration: none"
-              >用户协议</a
-            >
-            |
-            <a
-              href="/privacy"
-              style="color: var(--text-light); text-decoration: none"
-              >隐私政策</a
-            >
-            |
-            <a
-              href="/support"
-              style="color: var(--text-light); text-decoration: none"
-              >支持</a
-            >
-            |
+          <p class="footer-icp" style="text-align: center;">
+           
+             
             <a
               href="https://beian.miit.gov.cn/"
-              style="color: var(--text-light); text-decoration: none"
+              style="color: white; text-decoration: none; font-size: 16px;"
               >{{.ICP}}</a
             >
+          </p>
+          <p class="footer-copyright" style="text-align: center;">
+            &copy; 2024 无字书. All rights reserved.
           </p>
         </div>
       </footer>
@@ -970,7 +962,7 @@
 
     <script>
       document.addEventListener("DOMContentLoaded", function () {
-        // 初始化AOS动画库
+        // Initialize AOS animation library
         AOS.init({
           duration: 800,
           easing: "ease-in-out",
@@ -978,9 +970,9 @@
           mirror: false,
         });
 
-        // 获取服务器地址
+        // Get server address
 
-        // 添加滚动动画
+        // Add scroll animation
         const observerOptions = {
           threshold: 0.1,
           rootMargin: "0px 0px -50px 0px",
@@ -995,7 +987,7 @@
           });
         }, observerOptions);
 
-        // 观察所有特性卡片
+        // Observe all feature cards
         document.querySelectorAll(".feature-card").forEach((card) => {
           card.style.opacity = "0";
           card.style.transform = "translateY(30px)";
@@ -1003,7 +995,7 @@
           observer.observe(card);
         });
 
-        // 鼠标移动效果
+        // Mouse movement effect
         document.addEventListener("mousemove", (e) => {
           const cards = document.querySelectorAll(".feature-card");
           cards.forEach((card) => {
@@ -1016,7 +1008,7 @@
           });
         });
 
-        // 鼠标悬停增强动画效果
+        // Enhanced animation effect on mouse hover
         document
           .querySelectorAll(".feature-card, .cta-button, .secondary-button")
           .forEach((element) => {
@@ -1031,7 +1023,7 @@
             });
           });
 
-        // 随机微动效果
+        // Random micro-movement effect
         setInterval(() => {
           const elements = document.querySelectorAll(".feature-icon, .qr-code");
           elements.forEach((el) => {
@@ -1046,11 +1038,11 @@
           });
         }, 2000);
 
-        // 主题切换功能
+        // Theme switching function
         const themeToggle = document.getElementById("themeToggle");
         const themeIcon = themeToggle.querySelector(".theme-icon");
 
-        // 检查本地存储的主题偏好
+        // Check locally stored theme preference
         const savedTheme = localStorage.getItem("theme");
         if (savedTheme === "dark") {
           document.documentElement.setAttribute("data-theme", "dark");
@@ -1074,10 +1066,10 @@
       });
 
       function generateQRCode() {
-        // 获取当前服务器URL
+        // Get current server URL
         const serverUrl = "{{.URL}}";
 
-        // 生成二维码
+        // Generate QR code
         new QRCode(document.getElementById("qrcode"), {
           text: serverUrl,
           width: 200,

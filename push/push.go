@@ -31,6 +31,7 @@ func Push(params *model.ParamsMap, pushType apns2.EPushType, token string) error
 	// 添加自定义参数
 	skipKeys := map[string]struct{}{
 		model.DeviceKey:   {},
+		model.DeviceKeys:  {},
 		model.DeviceToken: {},
 		model.Title:       {},
 		model.Body:        {},
@@ -70,20 +71,25 @@ func Push(params *model.ParamsMap, pushType apns2.EPushType, token string) error
 }
 
 func BatchPush(params *model.ParamsResult, pushType apns2.EPushType) error {
+
 	var (
 		errors []error
 		mu     sync.Mutex
 		wg     sync.WaitGroup
 	)
-	if len(params.Results) > 0 {
 
-		for _, param := range params.Results {
+	// 如果 title, subtitle 和 body 都为空，设置静默推送模式
+	if params.IsNan {
+		pushType = apns2.PushTypeBackground
+	}
 
-			for _, key := range params.DeviceTokens {
+	for _, token := range params.Tokens {
+		if len(params.Results) > 0 {
+			for _, param := range params.Results {
 				wg.Add(1)
 				go func(p *model.ParamsMap) {
 					defer wg.Done()
-					if err := Push(p, pushType, key); err != nil {
+					if err := Push(p, pushType, token); err != nil {
 						log.Error(err.Error())
 						mu.Lock()
 						errors = append(errors, err)
@@ -91,25 +97,18 @@ func BatchPush(params *model.ParamsResult, pushType apns2.EPushType) error {
 					}
 				}(param)
 			}
-
-		}
-
-	} else {
-
-		// 如果 title, subtitle 和 body 都为空，设置无推送模式
-		if params.IsNan {
-			pushType = apns2.PushTypeBackground
-		}
-		for _, key := range params.DeviceTokens {
+		} else {
 			wg.Add(1)
-			go func() {
-				if err := Push(params.Params, pushType, key); err != nil {
+			go func(p *model.ParamsMap) {
+				defer wg.Done()
+				if err := Push(params.Params, pushType, token); err != nil {
+					log.Error(err.Error())
+					mu.Lock()
 					errors = append(errors, err)
+					mu.Unlock()
 				}
-			}()
-
+			}(params.Params)
 		}
-
 	}
 
 	wg.Wait()

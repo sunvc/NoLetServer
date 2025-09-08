@@ -58,6 +58,7 @@ func BaseRes(code int, message string, data ...interface{}) CommonResp {
 type DeviceInfo struct {
 	Key   string `json:"key"`
 	Token string `json:"token"`
+	Voice bool   `json:"voice"`
 }
 
 func DateNow() time.Time {

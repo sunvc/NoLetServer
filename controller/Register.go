@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"NoLetServer/config"
 	"NoLetServer/database"
 	"NoLetServer/model"
 	"net/http"
@@ -39,6 +40,7 @@ func RegisterController(c *fiber.Ctx) error {
 
 	var err error
 	var device = new(model.DeviceInfo)
+	device.Voice = config.LocalConfig.System.Voice
 
 	if err = c.BodyParser(&device); err != nil {
 		return c.JSON(model.Failed(http.StatusBadRequest, "failed to get device token: %v", err))

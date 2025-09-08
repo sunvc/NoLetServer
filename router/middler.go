@@ -22,10 +22,16 @@ var (
 
 func SetupMiddler(router fiber.Router, timeZone string) {
 	router.Use(logger.New(logger.Config{
-		Format:     "${time} INFO  ${ip} -> [${status}] ${method} ${latency}   ${route} => ${url} ${error}\n",
+		Format:     "${time} INFO  ${ip} -> [${status}] ${method} ${latency}   ${route} => ${url} ${error} ${UserAgent}\n",
 		TimeFormat: "2006-01-02 15:04:05",
-		Output:     os.Stdout,
-		TimeZone:   timeZone,
+		CustomTags: map[string]logger.LogFunc{
+			"UserAgent": func(output logger.Buffer, c *fiber.Ctx, data *logger.Data, extraParam string) (int, error) {
+				auth := c.Get(fiber.HeaderUserAgent)
+				return output.Write([]byte(auth))
+			},
+		},
+		Output:   os.Stdout,
+		TimeZone: timeZone,
 	}))
 	router.Use(recover.New())
 	router.Use(AuthRouter())
@@ -38,17 +44,11 @@ func SetupMiddler(router fiber.Router, timeZone string) {
 func AuthRouter() fiber.Handler {
 
 	return func(ctx *fiber.Ctx) error {
+		ctx.Locals("admin", false)
 
 		urlPrefix := config.LocalConfig.System.URLPrefix
 		// Get authorization header
 		auth := ctx.Get(fiber.HeaderAuthorization)
-		ver := config.LocalConfig.Verification(auth)
-
-		ctx.Locals("admin", ver)
-
-		if ver {
-			return ctx.Next()
-		}
 
 		for _, item := range authFreeRouters {
 			if strings.HasPrefix(ctx.Path(), path.Join(urlPrefix, item)) {
@@ -88,8 +88,10 @@ func AuthRouter() fiber.Handler {
 		username := credentials[:index]
 		password2 := credentials[index+1:]
 		if user == username && password == password2 {
+			ctx.Locals("admin", true)
 			return ctx.Next()
 		}
+
 		return ctx.Status(401).SendString("I'm a teapot")
 	}
 }

@@ -16,7 +16,6 @@ system:
   read_timeout: 3s
   write_timeout: 3s
   idle_timeout: 10s
-  admins: []
   debug: true
   version: ""
   build_date: ""
@@ -24,6 +23,7 @@ system:
   expired: 0
   icp_info: ""
   time_zone: "UTC"
+  voice: true
 
 apple:
   apnsPrivateKey: |-

@@ -9,6 +9,7 @@ import (
 	"unicode/utf8"
 
 	"github.com/gofiber/fiber/v2"
+
 	"github.com/google/uuid"
 	"github.com/wk8/go-ordered-map/v2"
 )
@@ -20,10 +21,11 @@ type ParamsMap = orderedmap.OrderedMap[string, interface{}]
 // ParamsResult 结构体用于存储和管理请求参数
 // 使用有序映射存储参数，保证参数的处理顺序
 type ParamsResult struct {
-	Params       *ParamsMap
-	Results      []*ParamsMap
-	DeviceTokens []string
-	IsNan        bool
+	Params  *ParamsMap
+	Results []*ParamsMap
+	Tokens  []string
+	Keys    []string
+	IsNan   bool
 }
 
 // NewParamsResult 创建新的参数结果对象
@@ -36,14 +38,40 @@ func NewParamsResult(c *fiber.Ctx) *ParamsResult {
 	main := &ParamsResult{
 		Params:  orderedmap.New[string, interface{}](),
 		Results: []*ParamsMap{},
+		Keys:    []string{},
+		Tokens:  []string{},
 	}
 	main.HandlerParamsToMapOrder(c)
 	main.SetDefault()
 	main.IsNan = ParamsNan(main)
 	results, err := SplitPayloadIfExceedsLimit(main.Params)
+
 	if err == nil {
 		main.Results = results
 	}
+
+	var resultKeys []string
+
+	if keys, ok := main.Params.Get(DeviceKeys); ok {
+		if vals, oka := keys.([]string); oka {
+			resultKeys = vals
+		}
+	}
+
+	if key, ok := main.Params.Get(DeviceKey); ok {
+		if val, oka := key.(string); oka {
+			resultKeys = append(resultKeys, val)
+		}
+
+	}
+	main.Keys = Unique[string](resultKeys)
+
+	if token, ok := main.Params.Get(DeviceToken); ok {
+		if val, oka := token.(string); oka && len(val) > 10 {
+			main.Tokens = append(main.Tokens, val)
+		}
+	}
+
 	return main
 }
 
@@ -151,9 +179,13 @@ func (p *ParamsResult) HandlerParamsToMapOrder(c *fiber.Ctx) {
 	// Fiber 路径参数
 	// "/:deviceKey/:title/:subtitle/:body"
 	if value := c.Params(DeviceKey); value != "" {
+		deviceKeys := strings.Split(value, ",")
+		if len(deviceKeys) > 0 {
+			result.Set(DeviceKeys, value)
+		}
 		result.Set(DeviceKey, value)
 	}
-	if value := c.Params("title"); value != "" {
+	if value := c.Params(Title); value != "" {
 		if value1, err := url.QueryUnescape(value); err == nil {
 			result.Set(Title, value1)
 		}
@@ -170,9 +202,30 @@ func (p *ParamsResult) HandlerParamsToMapOrder(c *fiber.Ctx) {
 	}
 
 	// parse query args (medium priority)
-	c.Request().URI().QueryArgs().VisitAll(func(key, value []byte) {
-		result.Set(p.NormalizeKey(string(key)), string(value))
-	})
+	{
+		var keys []string
+
+		c.Request().URI().QueryArgs().All()(func(key, value []byte) bool {
+			lowKey := p.NormalizeKey(string(key))
+			if lowKey == DeviceKey {
+				keys = append(keys, string(value))
+			} else {
+				result.Set(lowKey, string(value))
+			}
+
+			return true
+		})
+
+		if keysNum := len(keys); keysNum > 0 {
+			if keysNum == 1 {
+				result.Set(DeviceKey, keys[0])
+			} else {
+				result.Set(DeviceKeys, keys)
+			}
+		}
+	}
+
+	c.Request().URI().QueryArgs().All()
 
 	// POST Body
 	if c.Method() == fiber.MethodPost {
@@ -250,8 +303,10 @@ func convenientProcessor(params *ParamsMap) {
 	// 处理声音文件后缀
 	// 如果声音文件没有 .caf 后缀，则添加后缀
 	if val, ok := params.Get(Sound); ok {
-		if !strings.HasSuffix(val.(string), ".caf") {
-			params.Set(Sound, val.(string)+".caf")
+		if sound, oka := val.(string); oka {
+			if !strings.HasSuffix(sound, ".caf") {
+				params.Set(Sound, sound+".caf")
+			}
 		}
 	}
 }
@@ -369,5 +424,18 @@ func splitByUTF8Bytes(s string, maxBytes int) []string {
 		result = append(result, s[start:])
 	}
 
+	return result
+}
+
+func Unique[T comparable](list []T) []T {
+	seen := make(map[T]struct{})
+	result := make([]T, 0, len(list))
+
+	for _, v := range list {
+		if _, ok := seen[v]; !ok {
+			seen[v] = struct{}{}
+			result = append(result, v)
+		}
+	}
 	return result
 }

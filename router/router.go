@@ -8,12 +8,6 @@ import (
 
 func RegisterRoutes(router fiber.Router) {
 
-	{
-		controller.RenderHtml("/terms", router)
-		controller.RenderHtml("/privacy", router)
-		controller.RenderHtml("/support", router)
-	}
-
 	router.Get("/", controller.HomeController)
 	router.Get("/info", controller.GetInfo)
 
