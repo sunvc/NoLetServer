@@ -4,7 +4,7 @@ import (
 	"time"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/uuneo/apns2"
+	"github.com/sunvc/apns2"
 )
 
 func Admin(ctx *fiber.Ctx) bool {

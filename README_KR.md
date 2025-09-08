@@ -8,7 +8,7 @@
 
 GitHub Releases 페이지에서 미리 컴파일된 바이너리를 다운로드할 수 있습니다:
 
-1. [GitHub Releases](https://github.com/uuneo/NoLetServer/releases) 페이지 방문
+1. [GitHub Releases](https://github.com/sunvc/NoLetServer/releases) 페이지 방문
 2. 운영 체제 및 아키텍처에 맞는 버전 선택:
    - Windows (amd64)
    - macOS (amd64, arm64)

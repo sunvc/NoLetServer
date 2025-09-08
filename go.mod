@@ -12,8 +12,8 @@ require (
 	github.com/knadh/koanf/providers/file v1.2.0
 	github.com/knadh/koanf/v2 v2.2.2
 	github.com/lithammer/shortuuid/v3 v3.0.7
+	github.com/sunvc/apns2 v0.29.5
 	github.com/urfave/cli/v3 v3.4.1
-	github.com/uuneo/apns2 v0.29.3
 	github.com/wk8/go-ordered-map/v2 v2.1.8
 	go.etcd.io/bbolt v1.4.3
 	golang.org/x/net v0.43.0
@@ -48,6 +48,6 @@ require (
 	go.yaml.in/yaml/v3 v3.0.4 // indirect
 	golang.org/x/arch v0.20.0 // indirect
 	golang.org/x/sys v0.35.0 // indirect
-	golang.org/x/text v0.28.0 // indirect
+	golang.org/x/text v0.29.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )

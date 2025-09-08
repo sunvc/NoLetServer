@@ -9,7 +9,7 @@ import (
 	"time"
 
 	"github.com/gofiber/fiber/v2/log"
-	"github.com/uuneo/apns2"
+	"github.com/sunvc/apns2"
 )
 
 // MARK: - 推送任务

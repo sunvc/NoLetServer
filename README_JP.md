@@ -8,7 +8,7 @@
 
 GitHub Releasesページからプリコンパイルされたバイナリをダウンロードできます：
 
-1. [GitHub Releases](https://github.com/uuneo/NoLetServer/releases) ページにアクセス
+1. [GitHub Releases](https://github.com/sunvc/NoLetServer/releases) ページにアクセス
 2. お使いのオペレーティングシステムとアーキテクチャに適したバージョンを選択：
    - Windows (amd64)
    - macOS (amd64, arm64)

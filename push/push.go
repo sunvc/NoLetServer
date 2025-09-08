@@ -8,8 +8,8 @@ import (
 	"time"
 
 	"github.com/gofiber/fiber/v2/log"
-	"github.com/uuneo/apns2"
-	"github.com/uuneo/apns2/payload"
+	"github.com/sunvc/apns2"
+	"github.com/sunvc/apns2/payload"
 )
 
 // Push message to APNs server

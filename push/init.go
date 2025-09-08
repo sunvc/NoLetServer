@@ -10,8 +10,8 @@ import (
 	"runtime"
 
 	"github.com/gofiber/fiber/v2/log"
-	"github.com/uuneo/apns2"
-	"github.com/uuneo/apns2/token"
+	"github.com/sunvc/apns2"
+	"github.com/sunvc/apns2/token"
 	"golang.org/x/net/context"
 	"golang.org/x/net/http2"
 )

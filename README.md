@@ -8,7 +8,7 @@
 
 您可以从GitHub Releases页面下载预编译的二进制文件：
 
-1. 访问 [GitHub Releases](https://github.com/uuneo/NoLetServer/releases) 页面
+1. 访问 [GitHub Releases](https://github.com/sunvc/NoLetServer/releases) 页面
 2. 根据您的操作系统和架构选择合适的版本下载：
    - Windows (amd64)
    - macOS (amd64, arm64)
