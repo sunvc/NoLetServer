@@ -19,12 +19,12 @@ var (
 	authFreeRouters = []string{"/ping", "/register", "/health", "/u", "/upload", "/image", "/img", "/ptt"}
 )
 
-func SetupMiddler(router fiber.Router, timeZone string) {
+func SetupMiddler(router *fiber.App, timeZone string) {
 	router.Use(logger.New(logger.Config{
-		Format:     "${time} INFO  ${ip} -> [${status}] ${method} ${latency}   ${route} => ${url} ${error} ${UserAgent}\n",
+		Format:     "${time} INFO  ${ip} -> [${status}] ${method} ${latency} ${route} => ${url} ${error} ${agent}\n",
 		TimeFormat: "2006-01-02 15:04:05",
 		CustomTags: map[string]logger.LogFunc{
-			"UserAgent": func(output logger.Buffer, c *fiber.Ctx, data *logger.Data, extraParam string) (int, error) {
+			"agent": func(output logger.Buffer, c *fiber.Ctx, data *logger.Data, extraParam string) (int, error) {
 				auth := c.Get(fiber.HeaderUserAgent)
 				return output.Write([]byte(auth))
 			},
@@ -34,9 +34,7 @@ func SetupMiddler(router fiber.Router, timeZone string) {
 	}))
 	router.Use(recover.New())
 	router.Use(AuthRouter())
-	router.Use(favicon.New(favicon.Config{
-		File: "./static/logo.svg",
-	}))
+	router.Use(favicon.New(favicon.Config{File: "./static/logo.svg"}))
 
 }
 
@@ -44,12 +42,14 @@ func AuthRouter() fiber.Handler {
 
 	return basicauth.New(basicauth.Config{
 		Next: func(ctx *fiber.Ctx) bool {
-			ctx.Locals("admin", false)
-			auth := ctx.Get(fiber.HeaderAuthorization)
-			if auth == "123" {
-				ctx.Locals("admin", true)
-			}
 			sysConfig := config.LocalConfig.System
+
+			auth := ctx.Get(fiber.HeaderAuthorization)
+			if auth != "" {
+				ctx.Locals("admin", model.InList[string](sysConfig.Auths, auth))
+			} else {
+				ctx.Locals("admin", false)
+			}
 
 			if sysConfig.User == "" || sysConfig.Password == "" {
 				return true

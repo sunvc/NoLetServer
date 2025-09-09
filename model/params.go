@@ -40,6 +40,7 @@ func NewParamsResult(c *fiber.Ctx) *ParamsResult {
 		Results: []*ParamsMap{},
 		Keys:    []string{},
 		Tokens:  []string{},
+		IsNan:   false,
 	}
 	main.HandlerParamsToMapOrder(c)
 	main.SetDefault()
@@ -424,18 +425,5 @@ func splitByUTF8Bytes(s string, maxBytes int) []string {
 		result = append(result, s[start:])
 	}
 
-	return result
-}
-
-func Unique[T comparable](list []T) []T {
-	seen := make(map[T]struct{})
-	result := make([]T, 0, len(list))
-
-	for _, v := range list {
-		if _, ok := seen[v]; !ok {
-			seen[v] = struct{}{}
-			result = append(result, v)
-		}
-	}
 	return result
 }

@@ -20,3 +20,25 @@ type NotPushedData struct {
 	Params       *ParamsResult   `json:"params"`
 	PushType     apns2.EPushType `json:"pushType"`
 }
+
+func Unique[T comparable](list []T) []T {
+	seen := make(map[T]struct{})
+	result := make([]T, 0, len(list))
+
+	for _, v := range list {
+		if _, ok := seen[v]; !ok {
+			seen[v] = struct{}{}
+			result = append(result, v)
+		}
+	}
+	return result
+}
+
+func InList[T comparable](list []T, item T) bool {
+	for _, v := range list {
+		if v == item {
+			return true
+		}
+	}
+	return false
+}

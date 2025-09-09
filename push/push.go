@@ -84,30 +84,21 @@ func BatchPush(params *model.ParamsResult, pushType apns2.EPushType) error {
 	}
 
 	for _, token := range params.Tokens {
-		if len(params.Results) > 0 {
-			for _, param := range params.Results {
-				wg.Add(1)
-				go func(p *model.ParamsMap) {
-					defer wg.Done()
-					if err := Push(p, pushType, token); err != nil {
-						log.Error(err.Error())
-						mu.Lock()
-						errors = append(errors, err)
-						mu.Unlock()
-					}
-				}(param)
-			}
-		} else {
+		if len(params.Results) == 0 {
+			params.Results = append(params.Results, params.Params)
+		}
+		
+		for _, param := range params.Results {
 			wg.Add(1)
 			go func(p *model.ParamsMap) {
 				defer wg.Done()
-				if err := Push(params.Params, pushType, token); err != nil {
+				if err := Push(p, pushType, token); err != nil {
 					log.Error(err.Error())
 					mu.Lock()
 					errors = append(errors, err)
 					mu.Unlock()
 				}
-			}(params.Params)
+			}(param)
 		}
 	}
 

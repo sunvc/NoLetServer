@@ -16,7 +16,6 @@ import (
 	"github.com/bytedance/sonic"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/log"
-	"github.com/gofiber/fiber/v2/middleware/helmet"
 	"github.com/gofiber/template/html/v2"
 	"github.com/knadh/koanf/parsers/yaml"
 	"github.com/knadh/koanf/providers/file"
@@ -68,7 +67,7 @@ func main() {
 			engine := html.New("./static/html", ".html")
 
 			fiberApp := fiber.New(fiber.Config{
-				ServerHeader:          "NoLetServer",
+				ServerHeader:          systemConfig.Name,
 				Concurrency:           systemConfig.Concurrency,
 				ReadTimeout:           systemConfig.ReadTimeout,
 				WriteTimeout:          systemConfig.WriteTimeout,
@@ -78,7 +77,6 @@ func main() {
 				JSONEncoder:           sonic.Marshal,
 				JSONDecoder:           sonic.Unmarshal,
 				DisableStartupMessage: !systemConfig.Debug,
-				EnablePrintRoutes:     systemConfig.Debug,
 				Views:                 engine,
 				ErrorHandler: func(c *fiber.Ctx, err error) error {
 					code := fiber.StatusInternalServerError
@@ -90,19 +88,17 @@ func main() {
 				},
 			})
 
-			fiberApp.Static(config.LocalConfig.System.URLPrefix, "static")
+			router.SetupMiddler(fiberApp, systemConfig.TimeZone)
 
-			fiberApp.Use(helmet.New())
+			fiberApp.Static(config.LocalConfig.System.URLPrefix, "static")
 
 			// 监听结束信号
 			MonitoringSignal(fiberApp)
 
 			// 初始化数据库
 			database.InitDatabase()
-			fiberRouter := fiberApp.Group(config.LocalConfig.System.URLPrefix)
 
-			router.SetupMiddler(fiberRouter, systemConfig.TimeZone)
-			router.RegisterRoutes(fiberRouter)
+			fiberApp.Route(systemConfig.URLPrefix, router.RegisterRoutes)
 
 			push.CreateAPNSClient(systemConfig.MaxAPNSClientCount)
 

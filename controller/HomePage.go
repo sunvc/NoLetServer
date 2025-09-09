@@ -6,7 +6,6 @@ import (
 	"net/http"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/log"
 )
 
 // HomeController 处理首页请求
@@ -35,8 +34,6 @@ func HomeController(c *fiber.Ctx) error {
 
 	params["URL"] = url
 	params["ICP"] = config.LocalConfig.System.ICPInfo
-
-	log.Info("logo:", params)
 
 	return c.Render("index", params)
 }
