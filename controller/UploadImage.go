@@ -164,3 +164,22 @@ func isFileInDirectory(dirPath, fileName string) (bool, error) {
 
 	return true, nil
 }
+
+// EnsurePath 确保路径存在，如果不存在则创建
+func EnsurePath(path string) error {
+	// 获取路径的目录部分（如果是文件路径，则获取其所在目录）
+	dir := path
+
+	// 检查是否是文件路径（包含扩展名）
+	if filepath.Ext(path) != "" {
+		dir = filepath.Dir(path)
+	}
+
+	// 创建目录（包括所有父目录）
+	err := os.MkdirAll(dir, 0755)
+	if err != nil {
+		return fmt.Errorf("创建目录失败: %w", err)
+	}
+
+	return nil
+}

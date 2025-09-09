@@ -68,7 +68,7 @@ func main() {
 			engine := html.New("./static/html", ".html")
 
 			fiberApp := fiber.New(fiber.Config{
-				ServerHeader:          "NoLetServer",
+				ServerHeader:          systemConfig.Name,
 				Concurrency:           systemConfig.Concurrency,
 				ReadTimeout:           systemConfig.ReadTimeout,
 				WriteTimeout:          systemConfig.WriteTimeout,
@@ -108,7 +108,6 @@ func main() {
 
 			// 循环推送
 			controller.CirclePush()
-			controller.CirclePushPTT()
 			controller.CircleDeleteExFile(systemConfig.Expired)
 
 			if systemConfig.Cert != "" && systemConfig.Key != "" {

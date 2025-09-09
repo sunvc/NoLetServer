@@ -19,28 +19,15 @@ func RegisterRoutes(router fiber.Router) {
 	router.Get("/register/:deviceKey", CheckUserAgent, controller.RegisterController)
 
 	router.Get("/ping", controller.Ping)
-	router.Get("/p", controller.Ping)
 
 	router.Get("/health", func(c *fiber.Ctx) error { return c.JSON("ok") })
-	router.Get("/h", func(c *fiber.Ctx) error { return c.JSON("ok") })
 	// 推送请求
 	router.Post("/push", controller.BaseController)
 
 	router.Get("/upload*", controller.UploadController)
-	router.Get("/u", controller.UploadController)
 	router.Post("/upload", controller.UploadController)
-	router.Post("/u", controller.UploadController)
 	router.Get("/image/:filename", controller.GetImage)
 	router.Get("/img/:filename", controller.GetImage)
-
-	groupPtt := router.Group("/ptt", CheckUserAgent)
-	{
-		groupPtt.Post("/join", controller.JoinChannel)
-		groupPtt.Post("/leave", controller.LeaveChannel)
-		groupPtt.Get("/ping/:channel", controller.PingPTT)
-		groupPtt.Post("/send", controller.UploadVoice)
-		groupPtt.Get("/voices/:fileName", controller.GetVoice)
-	}
 
 	// title subtitle body
 	router.Get("/:devicekey<minLen(5)>/:title/:subtitle/:body", controller.BaseController)

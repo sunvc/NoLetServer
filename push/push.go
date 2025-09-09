@@ -118,32 +118,3 @@ func BatchPush(params *model.ParamsResult, pushType apns2.EPushType) error {
 
 	return nil
 }
-
-func PTTPush(params map[string]interface{}, token string) error {
-	pl := payload.NewPayload()
-
-	for key, value := range params {
-		if key == model.DeviceKey || key == model.DeviceToken {
-			continue // 跳过设备相关的键
-		}
-		pl.Custom(key, value)
-	}
-	CLI := <-CLIENTS // 从池中获取一个客户端
-	CLIENTS <- CLI   // 将客户端放回池中
-	// 创建并发送通知
-	resp, err := CLI.Push(&apns2.Notification{
-		DeviceToken: token,
-		Topic:       config.LocalConfig.Apple.Topic + ".voip-ptt",
-		Payload:     pl,
-		Expiration:  model.DateNow().Add(24 * time.Hour),
-		PushType:    apns2.PushTypePushToTalk,
-	})
-	// 错误处理
-	if err != nil {
-		return err
-	}
-	if resp.StatusCode != 200 {
-		return fmt.Errorf("APNs push failed: %s", resp.Reason)
-	}
-	return nil
-}
