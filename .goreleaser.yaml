@@ -74,7 +74,7 @@ archives:
 
 release:
   github:
-    owner: uuneo
+    owner: sunvc
     name: NoLetServer
 
 checksum:

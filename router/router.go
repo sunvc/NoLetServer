@@ -1,19 +1,22 @@
 package router
 
 import (
+	"NoLetServer/config"
 	"NoLetServer/controller"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/monitor"
 )
 
 func RegisterRoutes(router fiber.Router) {
 
 	router.Get("/", controller.HomeController)
 	router.Get("/info", controller.GetInfo)
+	router.Get("/metrics", monitor.New(monitor.Config{Title: config.LocalConfig.System.Name}))
 
 	// 注册
-	router.Post("/register", controller.RegisterController)
-	router.Get("/register/:deviceKey", controller.RegisterController)
+	router.Post("/register", CheckUserAgent, controller.RegisterController)
+	router.Get("/register/:deviceKey", CheckUserAgent, controller.RegisterController)
 
 	router.Get("/ping", controller.Ping)
 	router.Get("/p", controller.Ping)
@@ -30,26 +33,26 @@ func RegisterRoutes(router fiber.Router) {
 	router.Get("/image/:filename", controller.GetImage)
 	router.Get("/img/:filename", controller.GetImage)
 
-	group := router.Group("/ptt", Verification())
+	groupPtt := router.Group("/ptt", CheckUserAgent)
 	{
-		group.Post("/join", controller.JoinChannel)
-		group.Post("/leave", controller.LeaveChannel)
-		group.Get("/ping/:channel", controller.PingPTT)
-		group.Post("/send", controller.UploadVoice)
-		group.Get("/voices/:fileName", controller.GetVoice)
+		groupPtt.Post("/join", controller.JoinChannel)
+		groupPtt.Post("/leave", controller.LeaveChannel)
+		groupPtt.Get("/ping/:channel", controller.PingPTT)
+		groupPtt.Post("/send", controller.UploadVoice)
+		groupPtt.Get("/voices/:fileName", controller.GetVoice)
 	}
 
 	// title subtitle body
-	router.Get("/:devicekey/:title/:subtitle/:body", controller.BaseController)
-	router.Post("/:devicekey/:title/:subtitle/:body", controller.BaseController)
+	router.Get("/:devicekey<minLen(5)>/:title/:subtitle/:body", controller.BaseController)
+	router.Post("/:devicekey<minLen(5)>/:title/:subtitle/:body", controller.BaseController)
 	// title body
-	router.Get("/:devicekey/:title/:body", controller.BaseController)
-	router.Post("/:deviceKey/:title/:body", controller.BaseController)
+	router.Get("/:devicekey<minLen(5)>/:title/:body", controller.BaseController)
+	router.Post("/:deviceKey<minLen(5)>/:title/:body", controller.BaseController)
 	// body
-	router.Get("/:devicekey/:body", controller.BaseController)
-	router.Post("/:devicekey/:body", controller.BaseController)
+	router.Get("/:devicekey<minLen(5)>/:body", controller.BaseController)
+	router.Post("/:devicekey<minLen(5)>/:body", controller.BaseController)
 	// 参数化的推送
-	router.Get("/:devicekey", controller.BaseController)
-	router.Post("/:devicekey", controller.BaseController)
+	router.Get("/:devicekey<minLen(5)>", controller.BaseController)
+	router.Post("/:devicekey<minLen(5)>", controller.BaseController)
 
 }

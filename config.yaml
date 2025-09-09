@@ -2,7 +2,7 @@ system:
   user: ""
   password: ""
   addr: "0.0.0.0:8080"
-  url_prefix: "/"
+  url_prefix: ""
   data: "./data"
   name: "NoLet"
   dsn: ""
@@ -24,6 +24,7 @@ system:
   icp_info: ""
   time_zone: "UTC"
   voice: true
+  auth_ids: []
 
 apple:
   apnsPrivateKey: |-

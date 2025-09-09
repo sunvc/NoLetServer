@@ -35,6 +35,7 @@ var LocalConfig = &model.Config{
 		ICPInfo:            "",
 		TimeZone:           "UTC",
 		Voice:              false,
+		Auths:              []string{},
 	},
 	Apple: model.Apple{
 		ApnsPrivateKey: `-----BEGIN PRIVATE KEY-----
@@ -236,6 +237,16 @@ func Flags() []cli.Flag {
 			Hidden:  true,
 			Action: func(ctx context.Context, command *cli.Command, b bool) error {
 				LocalConfig.System.Voice = b
+				return nil
+			},
+		},
+		&cli.StringSliceFlag{
+			Name:    "auths",
+			Value:   []string{},
+			Usage:   "auth id list",
+			Sources: cli.EnvVars("NOLET_AUTHS"),
+			Action: func(ctx context.Context, command *cli.Command, strings []string) error {
+				LocalConfig.System.Auths = strings
 				return nil
 			},
 		},

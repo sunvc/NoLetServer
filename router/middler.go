@@ -3,17 +3,16 @@ package router
 import (
 	"NoLetServer/config"
 	"NoLetServer/model"
-	"encoding/base64"
 	"os"
 	"path"
 	"strings"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/log"
+	"github.com/gofiber/fiber/v2/middleware/basicauth"
 	"github.com/gofiber/fiber/v2/middleware/favicon"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/fiber/v2/middleware/recover"
-	"github.com/gofiber/fiber/v2/utils"
 )
 
 var (
@@ -35,92 +34,52 @@ func SetupMiddler(router fiber.Router, timeZone string) {
 	}))
 	router.Use(recover.New())
 	router.Use(AuthRouter())
-	router.Use("/register/+", CheckUserAgent())
 	router.Use(favicon.New(favicon.Config{
 		File: "./static/logo.svg",
 	}))
+
 }
 
 func AuthRouter() fiber.Handler {
 
-	return func(ctx *fiber.Ctx) error {
-		ctx.Locals("admin", false)
-
-		urlPrefix := config.LocalConfig.System.URLPrefix
-		// Get authorization header
-		auth := ctx.Get(fiber.HeaderAuthorization)
-
-		for _, item := range authFreeRouters {
-			if strings.HasPrefix(ctx.Path(), path.Join(urlPrefix, item)) {
-				return ctx.Next()
+	return basicauth.New(basicauth.Config{
+		Next: func(ctx *fiber.Ctx) bool {
+			ctx.Locals("admin", false)
+			auth := ctx.Get(fiber.HeaderAuthorization)
+			if auth == "123" {
+				ctx.Locals("admin", true)
 			}
-		}
+			sysConfig := config.LocalConfig.System
 
-		user := config.LocalConfig.System.User
-		password := config.LocalConfig.System.Password
+			if sysConfig.User == "" || sysConfig.Password == "" {
+				return true
+			}
 
-		if user == "" || password == "" {
-			return ctx.Next()
-		}
+			for _, item := range authFreeRouters {
+				if strings.HasPrefix(ctx.Path(), path.Join(sysConfig.URLPrefix, item)) {
+					return true
+				}
+			}
+			return false
+		},
+		Users: map[string]string{
+			config.LocalConfig.System.User: config.LocalConfig.System.Password,
+		},
+		Realm: "Forbidden",
+		Authorizer: func(s string, s2 string) bool {
+			return s == config.LocalConfig.System.User && s2 == config.LocalConfig.System.Password
+		},
+		Unauthorized: func(ctx *fiber.Ctx) error {
+			return ctx.JSON(model.Failed(-1, "Unauthorized access"))
+		},
+	})
+}
 
-		// Check if the header contains content besides "basic".
-		if len(auth) < 6 || !strings.HasPrefix(strings.ToLower(auth), "basic ") {
-			return ctx.Status(401).SendString("I'm a teapot")
-		}
-
-		// Decode the header contents
-		raw, err := base64.StdEncoding.DecodeString(auth[6:])
-		if err != nil {
-			return ctx.Status(401).SendString("I'm a teapot")
-		}
-
-		// Get the credentials
-		credentials := utils.UnsafeString(raw)
-
-		// Check if the credentials are in the correct form
-		// which is "username:password".
-		index := strings.Index(credentials, ":")
-		if index == -1 {
-			return ctx.Status(401).SendString("I'm a teapot")
-		}
-
-		// Get the username and password
-		username := credentials[:index]
-		password2 := credentials[index+1:]
-		if user == username && password == password2 {
-			ctx.Locals("admin", true)
-			return ctx.Next()
-		}
-
+func CheckUserAgent(ctx *fiber.Ctx) error {
+	log.Info(ctx.Path())
+	userAgent := ctx.Get(fiber.HeaderUserAgent)
+	if !strings.HasPrefix(userAgent, config.LocalConfig.System.Name) {
 		return ctx.Status(401).SendString("I'm a teapot")
 	}
-}
-
-func CheckUserAgent() fiber.Handler {
-	return func(ctx *fiber.Ctx) error {
-		log.Info(ctx.Path())
-		userAgent := ctx.Get(fiber.HeaderUserAgent)
-		if strings.HasPrefix(userAgent, config.LocalConfig.System.Name) {
-			return ctx.Status(401).SendString("I'm a teapot")
-		}
-		return ctx.Next()
-	}
-}
-
-func Verification() fiber.Handler {
-
-	return func(c *fiber.Ctx) error {
-		log.Info(c.Get("X-Signature"))
-		// 先查看是否是管理员身份
-		authHeader := c.Get(fiber.HeaderAuthorization)
-		UserAgent := c.Get(fiber.HeaderUserAgent)
-		if !config.LocalConfig.System.Debug {
-			if len(authHeader) < 10 || !strings.HasPrefix(UserAgent, config.LocalConfig.System.Name) {
-				return c.Status(401).JSON(model.Failed(-1, "Unauthorized access"))
-			}
-		}
-
-		return c.Next()
-
-	}
+	return ctx.Next()
 }

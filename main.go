@@ -16,6 +16,7 @@ import (
 	"github.com/bytedance/sonic"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/log"
+	"github.com/gofiber/fiber/v2/middleware/helmet"
 	"github.com/gofiber/template/html/v2"
 	"github.com/knadh/koanf/parsers/yaml"
 	"github.com/knadh/koanf/providers/file"
@@ -52,6 +53,7 @@ func main() {
 					} else {
 						config.LocalConfig.SetConfig(conf)
 					}
+
 				}
 
 			}
@@ -76,7 +78,7 @@ func main() {
 				JSONEncoder:           sonic.Marshal,
 				JSONDecoder:           sonic.Unmarshal,
 				DisableStartupMessage: !systemConfig.Debug,
-				Network:               "tcp",
+				EnablePrintRoutes:     systemConfig.Debug,
 				Views:                 engine,
 				ErrorHandler: func(c *fiber.Ctx, err error) error {
 					code := fiber.StatusInternalServerError
@@ -90,16 +92,18 @@ func main() {
 
 			fiberApp.Static(config.LocalConfig.System.URLPrefix, "static")
 
+			fiberApp.Use(helmet.New())
+
 			// 监听结束信号
 			MonitoringSignal(fiberApp)
 
 			// 初始化数据库
 			database.InitDatabase()
-
 			fiberRouter := fiberApp.Group(config.LocalConfig.System.URLPrefix)
 
 			router.SetupMiddler(fiberRouter, systemConfig.TimeZone)
 			router.RegisterRoutes(fiberRouter)
+
 			push.CreateAPNSClient(systemConfig.MaxAPNSClientCount)
 
 			// 循环推送
@@ -110,6 +114,7 @@ func main() {
 			if systemConfig.Cert != "" && systemConfig.Key != "" {
 				return fiberApp.ListenTLS(systemConfig.Addr, systemConfig.Cert, systemConfig.Key)
 			}
+
 			return fiberApp.Listen(systemConfig.Addr)
 		},
 	}

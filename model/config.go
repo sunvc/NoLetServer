@@ -1,47 +1,50 @@
 package model
 
-import "time"
+import (
+	"time"
+)
 
 type Config struct {
-	System System `mapstructure:"system" json:"system" yaml:"system"`
-	Apple  Apple  `mapstructure:"apple" json:"apple" yaml:"apple"`
+	System System `mapstructure:"system" json:"system" yaml:"system" koanf:"system"`
+	Apple  Apple  `mapstructure:"apple" json:"apple" yaml:"apple" koanf:"apple"`
 }
 
 // System 是 NoLetServer/Bark 服务的配置结构体
 type System struct {
-	User               string        `mapstructure:"user" json:"user" yaml:"user"`
-	Password           string        `mapstructure:"password" json:"password" yaml:"password"`
-	Addr               string        `mapstructure:"addr" json:"addr" yaml:"addr"`
-	URLPrefix          string        `mapstructure:"url_prefix" json:"url_prefix" yaml:"url_prefix"`
-	DataDir            string        `mapstructure:"data" json:"data" yaml:"data"`
-	Name               string        `mapstructure:"name" json:"name" yaml:"name"`
-	DSN                string        `mapstructure:"dsn" json:"dsn" yaml:"dsn"`
-	Cert               string        `mapstructure:"cert" json:"cert" yaml:"cert"`
-	Key                string        `mapstructure:"key" json:"key" yaml:"key" `
-	ReduceMemoryUsage  bool          `mapstructure:"reduce_memory_usage" json:"reduce_memory_usage" yaml:"reduce_memory_usage"`
-	ProxyHeader        string        `mapstructure:"proxy_header" json:"proxy_header" yaml:"proxy_header" `
-	MaxBatchPushCount  int           `mapstructure:"max_batch_push_count" json:"max_batch_push_count" yaml:"max_batch_push_count"`
-	MaxAPNSClientCount int           `mapstructure:"max_apns_client_count" json:"max_apns_client_count" yaml:"max_apns_client_count"`
-	Concurrency        int           `mapstructure:"concurrency" json:"concurrency" yaml:"concurrency"`
-	ReadTimeout        time.Duration `mapstructure:"read_timeout" json:"read_timeout" yaml:"read_timeout"`
-	WriteTimeout       time.Duration `mapstructure:"write_timeout" json:"write_timeout" yaml:"write_timeout"`
-	IdleTimeout        time.Duration `mapstructure:"idle_timeout" json:"idle_timeout" yaml:"idle_timeout"`
-	Debug              bool          `mapstructure:"debug" json:"debug" yaml:"debug"`
-	Version            string        `mapstructure:"version" json:"version" yaml:"version"`
-	BuildDate          string        `mapstructure:"build_date" json:"build_date" yaml:"build_date"`
-	CommitID           string        `mapstructure:"commitID" json:"commitID" yaml:"commitID"`
-	Expired            float64       `mapstructure:"expired" json:"expired" yaml:"expired"`
-	ICPInfo            string        `mapstructure:"icp_info" json:"icp_info" yaml:"icp_info"`
-	TimeZone           string        `mapstructure:"time_zone" json:"time_zone" yaml:"time_zone"`
-	Voice              bool          `mapstructure:"voice" json:"voice" yaml:"voice"`
+	User               string        `mapstructure:"user" json:"user" yaml:"user" koanf:"user"`
+	Password           string        `mapstructure:"password" json:"password" yaml:"password" koanf:"password"`
+	Addr               string        `mapstructure:"addr" json:"addr" yaml:"addr" koanf:"addr"`
+	URLPrefix          string        `mapstructure:"url_prefix" json:"url_prefix" yaml:"url_prefix" koanf:"url_prefix"`
+	DataDir            string        `mapstructure:"data" json:"data" yaml:"data" koanf:"data"`
+	Name               string        `mapstructure:"name" json:"name" yaml:"name" koanf:"name"`
+	DSN                string        `mapstructure:"dsn" json:"dsn" yaml:"dsn" koanf:"dsn"`
+	Cert               string        `mapstructure:"cert" json:"cert" yaml:"cert" koanf:"cert"`
+	Key                string        `mapstructure:"key" json:"key" yaml:"key" koanf:"key"`
+	ReduceMemoryUsage  bool          `mapstructure:"reduce_memory_usage" json:"reduce_memory_usage" yaml:"reduce_memory_usage" koanf:"reduce_memory_usage"`
+	ProxyHeader        string        `mapstructure:"proxy_header" json:"proxy_header" yaml:"proxy_header" koanf:"proxy_header"`
+	MaxBatchPushCount  int           `mapstructure:"max_batch_push_count" json:"max_batch_push_count" yaml:"max_batch_push_count" koanf:"max_batch_push_count"`
+	MaxAPNSClientCount int           `mapstructure:"max_apns_client_count" json:"max_apns_client_count" yaml:"max_apns_client_count" koanf:"max_apns_client_count"`
+	Concurrency        int           `mapstructure:"concurrency" json:"concurrency" yaml:"concurrency" koanf:"concurrency"`
+	ReadTimeout        time.Duration `mapstructure:"read_timeout" json:"read_timeout" yaml:"read_timeout" koanf:"read_timeout"`
+	WriteTimeout       time.Duration `mapstructure:"write_timeout" json:"write_timeout" yaml:"write_timeout" koanf:"write_timeout"`
+	IdleTimeout        time.Duration `mapstructure:"idle_timeout" json:"idle_timeout" yaml:"idle_timeout" koanf:"idle_timeout"`
+	Debug              bool          `mapstructure:"debug" json:"debug" yaml:"debug" koanf:"debug"`
+	Version            string        `mapstructure:"version" json:"version" yaml:"version" koanf:"version"`
+	BuildDate          string        `mapstructure:"build_date" json:"build_date" yaml:"build_date" koanf:"build_date"`
+	CommitID           string        `mapstructure:"commitID" json:"commitID" yaml:"commitID" koanf:"commitID"`
+	Expired            float64       `mapstructure:"expired" json:"expired" yaml:"expired" koanf:"expired"`
+	ICPInfo            string        `mapstructure:"icp_info" json:"icp_info" yaml:"icp_info" koanf:"icp_info"`
+	TimeZone           string        `mapstructure:"time_zone" json:"time_zone" yaml:"time_zone" koanf:"time_zone"`
+	Voice              bool          `mapstructure:"voice" json:"voice" yaml:"voice" koanf:"voice"`
+	Auths              []string      `mapstructure:"auths" json:"auths" yaml:"auths" koanf:"auths"`
 }
 
 type Apple struct {
-	ApnsPrivateKey string `mapstructure:"apnsPrivateKey" json:"apnsPrivateKey" yaml:"apnsPrivateKey"`
-	Topic          string `mapstructure:"topic" json:"topic" yaml:"topic"`
-	KeyID          string `mapstructure:"keyID" json:"keyID" yaml:"keyID"`
-	TeamID         string `mapstructure:"teamID" json:"teamID" yaml:"teamID"`
-	Develop        bool   `mapstructure:"develop" json:"develop" yaml:"develop" `
+	ApnsPrivateKey string `mapstructure:"apnsPrivateKey" json:"apnsPrivateKey" yaml:"apnsPrivateKey" koanf:"apnsPrivateKey"`
+	Topic          string `mapstructure:"topic" json:"topic" yaml:"topic" koanf:"topic"`
+	KeyID          string `mapstructure:"keyID" json:"keyID" yaml:"keyID" koanf:"keyID"`
+	TeamID         string `mapstructure:"teamID" json:"teamID" yaml:"teamID" koanf:"teamID"`
+	Develop        bool   `mapstructure:"develop" json:"develop" yaml:"develop" koanf:"develop"`
 }
 
 func (global *Config) SetConfig(conf Config) {
