@@ -19,7 +19,7 @@ var (
 	authFreeRouters = []string{"/ping", "/register", "/health", "/u", "/upload", "/image", "/img", "/ptt"}
 )
 
-func SetupMiddler(router fiber.Router, timeZone string) {
+func SetupMiddler(router *fiber.App, timeZone string) {
 	router.Use(logger.New(logger.Config{
 		Format:     "${time} INFO  ${ip} -> [${status}] ${method} ${latency}   ${route} => ${url} ${error} ${UserAgent}\n",
 		TimeFormat: "2006-01-02 15:04:05",

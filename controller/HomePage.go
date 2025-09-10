@@ -3,10 +3,10 @@ package controller
 import (
 	"NoLetServer/config"
 	"NoLetServer/model"
+	"html/template"
 	"net/http"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/log"
 )
 
 // HomeController 处理首页请求
@@ -31,13 +31,13 @@ func HomeController(c *fiber.Ctx) error {
 			return "http://" + string(c.Request().Host())
 		}
 	}()
-	params := c.Queries()
 
-	params["URL"] = url
-	params["ICP"] = config.LocalConfig.System.ICPInfo
-
-	log.Info("logo:", params)
-
+	params := map[string]interface{}{
+		"LOGOSVG": template.URL(config.LOGOSVG),
+		"LOGOPNG": template.URL(config.LOGOPNG),
+		"ICP":     config.LocalConfig.System.ICPInfo,
+		"URL":     template.URL(url),
+	}
 	return c.Render("index", params)
 }
 

@@ -16,7 +16,6 @@ import (
 	"github.com/bytedance/sonic"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/log"
-	"github.com/gofiber/fiber/v2/middleware/helmet"
 	"github.com/gofiber/template/html/v2"
 	"github.com/knadh/koanf/parsers/yaml"
 	"github.com/knadh/koanf/providers/file"
@@ -89,10 +88,8 @@ func main() {
 					return c.Status(code).JSON(model.BaseRes(code, err.Error()))
 				},
 			})
-
+			router.SetupMiddler(fiberApp, systemConfig.TimeZone)
 			fiberApp.Static(config.LocalConfig.System.URLPrefix, "static")
-
-			fiberApp.Use(helmet.New())
 
 			// 监听结束信号
 			MonitoringSignal(fiberApp)
@@ -101,7 +98,6 @@ func main() {
 			database.InitDatabase()
 			fiberRouter := fiberApp.Group(config.LocalConfig.System.URLPrefix)
 
-			router.SetupMiddler(fiberRouter, systemConfig.TimeZone)
 			router.RegisterRoutes(fiberRouter)
 
 			push.CreateAPNSClient(systemConfig.MaxAPNSClientCount)
