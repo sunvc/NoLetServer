@@ -7,11 +7,8 @@ import (
 	"NoLetServer/model"
 	"NoLetServer/push"
 	"NoLetServer/router"
-	"context"
+	"embed"
 	"errors"
-	"os"
-	"os/signal"
-	"syscall"
 
 	"github.com/bytedance/sonic"
 	"github.com/gofiber/fiber/v2"
@@ -20,7 +17,14 @@ import (
 	"github.com/knadh/koanf/parsers/yaml"
 	"github.com/knadh/koanf/providers/file"
 	"github.com/knadh/koanf/v2"
+
+	"net/http"
+	"os"
+	"os/signal"
+	"syscall"
+
 	"github.com/urfave/cli/v3"
+	"golang.org/x/net/context"
 )
 
 var (
@@ -29,8 +33,11 @@ var (
 	commitID  string
 )
 
-func main() {
+//go:embed static/**/*
+var staticFS embed.FS
 
+func main() {
+	config.StaticFS = &staticFS
 	app := &cli.Command{
 		Name:    "NoLetServer",
 		Usage:   "Push Server For NoLet",
@@ -63,11 +70,10 @@ func main() {
 
 			// 创建 HTML 引擎
 			systemConfig := config.LocalConfig.System
-
-			engine := html.New("./static/html", ".html")
-
+			engine := html.NewFileSystem(http.FS(staticFS), ".html")
 			fiberApp := fiber.New(fiber.Config{
 				ServerHeader:          systemConfig.Name,
+				CaseSensitive:         true,
 				Concurrency:           systemConfig.Concurrency,
 				ReadTimeout:           systemConfig.ReadTimeout,
 				WriteTimeout:          systemConfig.WriteTimeout,
@@ -77,7 +83,6 @@ func main() {
 				JSONEncoder:           sonic.Marshal,
 				JSONDecoder:           sonic.Unmarshal,
 				DisableStartupMessage: !systemConfig.Debug,
-				EnablePrintRoutes:     systemConfig.Debug,
 				Views:                 engine,
 				ErrorHandler: func(c *fiber.Ctx, err error) error {
 					code := fiber.StatusInternalServerError
@@ -89,22 +94,19 @@ func main() {
 				},
 			})
 			router.SetupMiddler(fiberApp, systemConfig.TimeZone)
-			fiberApp.Static(config.LocalConfig.System.URLPrefix, "static")
 
 			// 监听结束信号
 			MonitoringSignal(fiberApp)
 
 			// 初始化数据库
 			database.InitDatabase()
-			fiberRouter := fiberApp.Group(config.LocalConfig.System.URLPrefix)
 
-			router.RegisterRoutes(fiberRouter)
+			fiberApp.Route(systemConfig.URLPrefix, router.RegisterRoutes)
 
 			push.CreateAPNSClient(systemConfig.MaxAPNSClientCount)
 
 			// 循环推送
 			controller.CirclePush()
-			controller.CircleDeleteExFile(systemConfig.Expired)
 
 			if systemConfig.Cert != "" && systemConfig.Key != "" {
 				return fiberApp.ListenTLS(systemConfig.Addr, systemConfig.Cert, systemConfig.Key)

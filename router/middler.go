@@ -10,7 +10,6 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/log"
 	"github.com/gofiber/fiber/v2/middleware/basicauth"
-	"github.com/gofiber/fiber/v2/middleware/favicon"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/fiber/v2/middleware/recover"
 )
@@ -34,9 +33,6 @@ func SetupMiddler(router *fiber.App, timeZone string) {
 	}))
 	router.Use(recover.New())
 	router.Use(AuthRouter())
-	router.Use(favicon.New(favicon.Config{
-		File: "./static/logo.svg",
-	}))
 
 }
 

@@ -373,8 +373,8 @@ func SplitPayloadIfExceedsLimit(basePayload *ParamsMap) ([]*ParamsMap, error) {
 	for i, part := range chunks {
 		p := copyPayload(base)
 		p.Set(Body, part)
-		p.Set(Index, i)
-		p.Set(Count, count)
+		p.Set(CurrentIndex, i)
+		p.Set(TotalCount, count)
 		results = append(results, p)
 	}
 
