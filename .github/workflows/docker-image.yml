@@ -1,11 +1,9 @@
 name: Build And Push
 
 on:
-  pull_request:
-    branches:
-      - main
-    types:
-      - closed
+  push:
+    tags:
+      - '*'
 
 jobs:
   docker:
