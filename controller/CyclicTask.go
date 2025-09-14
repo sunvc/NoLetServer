@@ -1,10 +1,8 @@
 package controller
 
 import (
-	"NoLetServer/config"
 	"NoLetServer/model"
 	"NoLetServer/push"
-	"os"
 	"sync"
 	"time"
 
@@ -80,43 +78,4 @@ func UpdateNotPushedData(id string, params *model.ParamsResult, pushType apns2.E
 // RemoveNotPushedData 删除数据
 func RemoveNotPushedData(id string) {
 	NotPushedDataList.Delete(id)
-}
-
-// MARK: - 检查文件
-
-func CircleDeleteExFile(expireTime float64) {
-	if expireTime == -1 {
-		return
-	}
-	go func() {
-		ticker := time.NewTicker(30 * time.Minute)
-		defer ticker.Stop()
-
-		for range ticker.C {
-			dir := config.BaseDir("voices") // 要扫描的目录
-
-			entries, err := os.ReadDir(dir)
-			if err != nil {
-				return
-			}
-
-			for _, entry := range entries {
-				if !entry.IsDir() {
-					file, err := entry.Info()
-					if err != nil {
-						log.Errorf("ReadDir error: %v", err)
-						continue
-					}
-					diff := time.Since(file.ModTime())
-					if diff.Minutes() > expireTime {
-						_ = os.Remove(dir + "/" + entry.Name())
-						log.Info("Remove file %s", entry.Name())
-					} else {
-						log.Infof("File %s is %v minu", file.Name(), diff.Minutes())
-					}
-
-				}
-			}
-		}
-	}()
 }

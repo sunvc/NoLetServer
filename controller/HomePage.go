@@ -5,6 +5,7 @@ import (
 	"NoLetServer/model"
 	"html/template"
 	"net/http"
+	"path/filepath"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -13,6 +14,7 @@ import (
 // 支持两种功能:
 // 1. 通过id参数移除未推送数据
 // 2. 生成二维码图片
+
 func HomeController(c *fiber.Ctx) error {
 
 	if id := c.Query("id"); id != "" {
@@ -32,17 +34,33 @@ func HomeController(c *fiber.Ctx) error {
 		}
 	}()
 
-	params := map[string]interface{}{
-		"LOGOSVG": template.URL(config.LOGOSVG),
-		"LOGOPNG": template.URL(config.LOGOPNG),
+	return c.Render("static/html/index", fiber.Map{
 		"ICP":     config.LocalConfig.System.ICPInfo,
 		"URL":     template.URL(url),
-	}
-	return c.Render("index", params)
+		"LOGORAW": template.HTML(config.LOGORAW),
+		"LOGOSVG": template.URL(config.LogoSvgImage("#ff0000", false)),
+	})
 }
 
 // Ping 处理心跳检测请求
 // 返回服务器当前状态
 func Ping(c *fiber.Ctx) error {
 	return c.JSON(model.BaseRes(http.StatusOK, "pong"))
+}
+
+func Media(c *fiber.Ctx) error {
+	fileName := c.Params("file")
+	color := c.Query("color")
+
+	path := filepath.Join("static/media", fileName)
+
+	if fileName == "logo.svg" {
+		c.Set("Content-Type", "image/svg+xml")
+		return c.Send([]byte(config.LogoSvgImage(color, true)))
+	}
+
+	if _, err := config.StaticFS.ReadFile(path); err != nil {
+		return c.SendStatus(fiber.StatusNotFound)
+	}
+	return c.SendFile(path)
 }

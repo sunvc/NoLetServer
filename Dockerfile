@@ -33,7 +33,6 @@ RUN set -ex \
     && rm -rf /var/lib/apk/lists/*
 
 COPY --from=builder /app/main .
-COPY --from=builder /app/static ./static
 
 VOLUME /data
 

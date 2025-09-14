@@ -32,7 +32,7 @@ func UploadController(c *fiber.Ctx) error {
 	ok := model.Admin(c)
 
 	if c.Method() == fiber.MethodGet {
-		return c.Render("upload", c.Queries())
+		return c.Render("static/html/upload", c.Queries())
 	}
 
 	if !ok {
