@@ -58,9 +58,11 @@ func Media(c *fiber.Ctx) error {
 		c.Set("Content-Type", "image/svg+xml")
 		return c.Send([]byte(config.LogoSvgImage(color, true)))
 	}
-
-	if _, err := config.StaticFS.ReadFile(path); err != nil {
+	data, err := config.StaticFS.ReadFile(path)
+	if err != nil {
 		return c.SendStatus(fiber.StatusNotFound)
 	}
-	return c.SendFile(path)
+	c.Set("Content-Type", "image/png")
+
+	return c.Send(data)
 }
