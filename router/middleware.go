@@ -6,8 +6,8 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
-	"github.com/sunvc/NoLetS/common"
-	"github.com/sunvc/NoLetS/controller"
+	"github.com/sunvc/NoLet/common"
+	"github.com/sunvc/NoLet/controller"
 )
 
 func Verification() gin.HandlerFunc {

@@ -9,7 +9,7 @@ import (
 	"net/http"
 	"runtime"
 
-	"github.com/sunvc/NoLetS/common"
+	"github.com/sunvc/NoLet/common"
 	"github.com/sunvc/apns2"
 	"github.com/sunvc/apns2/token"
 	"golang.org/x/net/context"

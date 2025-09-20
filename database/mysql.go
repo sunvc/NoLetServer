@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/sunvc/NoLetS/common"
+	"github.com/sunvc/NoLet/common"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/lithammer/shortuuid/v3"

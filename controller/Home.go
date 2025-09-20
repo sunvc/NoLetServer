@@ -5,7 +5,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/sunvc/NoLetS/common"
+	"github.com/sunvc/NoLet/common"
 )
 
 // Home 处理首页请求

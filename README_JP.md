@@ -11,7 +11,7 @@ height="40">](https://apps.apple.com/us/app/id6615073345)
 
 GitHub Releasesページからプリコンパイルされたバイナリをダウンロードできます：
 
-1. [GitHub Releases](https://github.com/sunvc/NoLetServer/releases) ページにアクセス
+1. [GitHub Releases](https://github.com/sunvc/NoLeterver/releases) ページにアクセス
 2. お使いのオペレーティングシステムとアーキテクチャに適したバージョンを選択：
    - Windows (amd64)
    - macOS (amd64, arm64)

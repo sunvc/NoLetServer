@@ -11,7 +11,7 @@ height="40">](https://apps.apple.com/us/app/id6615073345)
 
 You can download pre-compiled binaries from the GitHub Releases page:
 
-1. Visit the [GitHub Releases](https://github.com/sunvc/NoLetServer/releases) page
+1. Visit the [GitHub Releases](https://github.com/sunvc/NoLeterver/releases) page
 2. Choose the appropriate version for your operating system and architecture:
    - Windows (amd64)
    - macOS (amd64, arm64)

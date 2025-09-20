@@ -5,8 +5,8 @@ import (
 	"runtime"
 
 	"github.com/gin-gonic/gin"
-	"github.com/sunvc/NoLetS/common"
-	"github.com/sunvc/NoLetS/database"
+	"github.com/sunvc/NoLet/common"
+	"github.com/sunvc/NoLet/database"
 )
 
 func Info(c *gin.Context) {

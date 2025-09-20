@@ -5,8 +5,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/sunvc/NoLetS/common"
-	"github.com/sunvc/NoLetS/push"
+	"github.com/sunvc/NoLet/common"
+	"github.com/sunvc/NoLet/push"
 	"github.com/sunvc/apns2"
 )
 

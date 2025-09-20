@@ -5,7 +5,7 @@ import (
 	"path/filepath"
 
 	"github.com/gin-gonic/gin"
-	"github.com/sunvc/NoLetS/common"
+	"github.com/sunvc/NoLet/common"
 )
 
 func GetImage(c *gin.Context) {

@@ -9,7 +9,7 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
-	"github.com/sunvc/NoLetS/common"
+	"github.com/sunvc/NoLet/common"
 )
 
 // Upload 处理图片上传请求

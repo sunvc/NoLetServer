@@ -4,8 +4,8 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/sunvc/NoLetS/common"
-	"github.com/sunvc/NoLetS/database"
+	"github.com/sunvc/NoLet/common"
+	"github.com/sunvc/NoLet/database"
 )
 
 // Register 处理设备注册请求

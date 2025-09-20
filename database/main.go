@@ -1,6 +1,6 @@
 package database
 
-import "github.com/sunvc/NoLetS/common"
+import "github.com/sunvc/NoLet/common"
 
 var DB Database
 

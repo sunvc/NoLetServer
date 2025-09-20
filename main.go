@@ -14,10 +14,10 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/sunvc/NoLetS/common"
-	"github.com/sunvc/NoLetS/database"
-	"github.com/sunvc/NoLetS/push"
-	"github.com/sunvc/NoLetS/router"
+	"github.com/sunvc/NoLet/common"
+	"github.com/sunvc/NoLet/database"
+	"github.com/sunvc/NoLet/push"
+	"github.com/sunvc/NoLet/router"
 	"github.com/urfave/cli/v3"
 )
 
