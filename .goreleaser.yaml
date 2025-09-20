@@ -12,6 +12,8 @@ builds:
       - arm64
     ldflags:
       - "-s -w -X main.version={{.Version}} -X main.commit={{.Commit}} -X main.date={{.Date}}"
+    flags:
+      - -tags="sonic avx"
     env:
       - CGO_ENABLED=0
 
@@ -23,13 +25,14 @@ builds:
       - amd64
       - arm64
       - mips64
-      - mips64le
     goamd64:
       - v2
       - v3
       - v4
     ldflags:
       - "-s -w -X main.version={{.Version}} -X main.commit={{.Commit}} -X main.date={{.Date}}"
+    flags:
+      - -tags="sonic avx"
     env:
       - CGO_ENABLED=0
 
@@ -45,6 +48,8 @@ builds:
       - v4
     ldflags:
       - "-s -w -X main.version={{.Version}} -X main.commit={{.Commit}} -X main.date={{.Date}}"
+    flags:
+      - -tags="sonic avx"
     env:
       - CGO_ENABLED=0
 
@@ -57,12 +62,16 @@ builds:
       - arm64
     ldflags:
       - "-s -w -X main.version={{.Version}} -X main.commit={{.Commit}} -X main.date={{.Date}}"
+    flags:
+      - -tags="sonic avx"
     env:
       - CGO_ENABLED=0
 
 archives:
   - id: default
-    format: tar.gz
+    format_overrides:
+      - goos: default
+        format: tar.gz
     files:
       - src: pushback.p8
         dst: pushback.p8
@@ -82,7 +91,7 @@ checksum:
   name_template: "checksums.txt"
 
 snapshot:
-  name_template: "{{ .Tag }}-next"
+  version_template: "{{ .Tag }}-next"
 
 changelog:
   sort: asc
