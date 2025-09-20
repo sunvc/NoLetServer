@@ -1,14 +1,14 @@
 package database
 
 import (
-	"NoLetServer/config"
 	"fmt"
+	"log"
 	"os"
 	"path/filepath"
 	"sync"
 
-	"github.com/gofiber/fiber/v2/log"
 	"github.com/lithammer/shortuuid/v3"
+	"github.com/sunvc/NoLetS/common"
 	"go.etcd.io/bbolt"
 )
 
@@ -27,7 +27,7 @@ func NewBboltdb(dataDir string) Database {
 func (d *BboltDB) CountAll() (int, error) {
 	var keypairCount int
 	err := BBDB.View(func(tx *bbolt.Tx) error {
-		keypairCount = tx.Bucket([]byte(config.LocalConfig.System.Name)).Stats().KeyN
+		keypairCount = tx.Bucket([]byte(common.LocalConfig.System.Name)).Stats().KeyN
 		return nil
 	})
 
@@ -45,7 +45,7 @@ func (d *BboltDB) Close() error {
 func (d *BboltDB) DeviceTokenByKey(key string) (string, error) {
 	var token string
 	err := BBDB.View(func(tx *bbolt.Tx) error {
-		if bs := tx.Bucket([]byte(config.LocalConfig.System.Name)).Get([]byte(key)); bs == nil {
+		if bs := tx.Bucket([]byte(common.LocalConfig.System.Name)).Get([]byte(key)); bs == nil {
 			return fmt.Errorf("failed to get [%s] device token from database", key)
 		} else {
 			token = string(bs)
@@ -64,7 +64,7 @@ func (d *BboltDB) DeviceTokenByKey(key string) (string, error) {
 func (d *BboltDB) SaveDeviceTokenByKey(key, deviceToken string) (string, error) {
 	err := BBDB.Update(func(tx *bbolt.Tx) error {
 
-		bucket := tx.Bucket([]byte(config.LocalConfig.System.Name))
+		bucket := tx.Bucket([]byte(common.LocalConfig.System.Name))
 		// If the deviceKey is empty or the corresponding deviceToken cannot be obtained from the database,
 		// it is considered as a new device registration
 		if key == "" {
@@ -85,26 +85,26 @@ func (d *BboltDB) SaveDeviceTokenByKey(key, deviceToken string) (string, error) 
 // bboltSetup set up the bbolt database
 func bboltSetup(dataDir string) {
 	dbOnce.Do(func() {
-		log.Info(fmt.Sprintf("init database [%s]...", dataDir))
+		log.Println(fmt.Sprintf("init database [%s]...", dataDir))
 		if _, err := os.Stat(dataDir); os.IsNotExist(err) {
 			if err = os.MkdirAll(dataDir, 0755); err != nil {
-				log.Error(fmt.Sprintf("failed to create database storage dir(%s): %v", dataDir, err))
+				log.Println(fmt.Sprintf("failed to create database storage dir(%s): %v", dataDir, err))
 			}
 		} else if err != nil {
-			log.Error(fmt.Sprintf("failed to open database storage dir(%s): %v", dataDir, err))
+			log.Println(fmt.Sprintf("failed to open database storage dir(%s): %v", dataDir, err))
 		}
 
-		bboltDB, err := bbolt.Open(filepath.Join(dataDir, config.LocalConfig.System.Name+".db"), 0600, nil)
+		bboltDB, err := bbolt.Open(filepath.Join(dataDir, common.LocalConfig.System.Name+".db"), 0600, nil)
 		if err != nil {
-			log.Error(fmt.Sprintf("failed to create file (%s): %v", filepath.Join(dataDir, config.LocalConfig.System.Name+".db"), err))
+			log.Println(fmt.Sprintf("failed to create file (%s): %v", filepath.Join(dataDir, common.LocalConfig.System.Name+".db"), err))
 		}
 
 		err = bboltDB.Update(func(tx *bbolt.Tx) error {
-			_, err = tx.CreateBucketIfNotExists([]byte(config.LocalConfig.System.Name))
+			_, err = tx.CreateBucketIfNotExists([]byte(common.LocalConfig.System.Name))
 			return err
 		})
 		if err != nil {
-			log.Error(fmt.Sprintf("failed to create database bucket: %v", err))
+			log.Println(fmt.Sprintf("failed to create database bucket: %v", err))
 		}
 
 		BBDB = bboltDB
@@ -114,9 +114,9 @@ func bboltSetup(dataDir string) {
 // KeyExists 检查指定的 key 是否存在于数据库中，只返回 bool 值
 func (d *BboltDB) KeyExists(key string) bool {
 	err := BBDB.View(func(tx *bbolt.Tx) error {
-		bucket := tx.Bucket([]byte(config.LocalConfig.System.Name))
+		bucket := tx.Bucket([]byte(common.LocalConfig.System.Name))
 		if bucket == nil {
-			return fmt.Errorf("bucket %s not found", config.LocalConfig.System.Name)
+			return fmt.Errorf("bucket %s not found", common.LocalConfig.System.Name)
 		}
 		// 检查 key 是否存在
 		if bucket.Get([]byte(key)) != nil {

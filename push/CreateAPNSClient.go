@@ -1,15 +1,15 @@
 package push
 
 import (
-	"NoLetServer/config"
 	"crypto/tls"
 	"crypto/x509"
 	"fmt"
+	"log"
 	"net"
 	"net/http"
 	"runtime"
 
-	"github.com/gofiber/fiber/v2/log"
+	"github.com/sunvc/NoLetS/common"
 	"github.com/sunvc/apns2"
 	"github.com/sunvc/apns2/token"
 	"golang.org/x/net/context"
@@ -24,9 +24,9 @@ func CreateAPNSClient(maxClientCount int) {
 
 	CLIENTS = make(chan *apns2.Client, min(runtime.NumCPU(), maxClientCount))
 
-	authKey, err := token.AuthKeyFromBytes([]byte(config.LocalConfig.Apple.ApnsPrivateKey))
+	authKey, err := token.AuthKeyFromBytes([]byte(common.LocalConfig.Apple.ApnsPrivateKey))
 	if err != nil {
-		log.Error(fmt.Sprintf("failed to create APNS auth key: %v", err))
+		log.Println(fmt.Sprintf("failed to create APNS auth key: %v", err))
 	}
 
 	var rootCAs *x509.CertPool
@@ -38,11 +38,11 @@ func CreateAPNSClient(maxClientCount int) {
 	} else {
 		rootCAs, err = x509.SystemCertPool()
 		if err != nil {
-			log.Error(fmt.Sprintf("failed to get rootCAs: %v", err))
+			log.Println(fmt.Sprintf("failed to get rootCAs: %v", err))
 		}
 	}
 
-	for _, ca := range config.ApnsCAs {
+	for _, ca := range common.ApnsCAs {
 		rootCAs.AppendCertsFromPEM([]byte(ca))
 	}
 
@@ -50,8 +50,8 @@ func CreateAPNSClient(maxClientCount int) {
 		CLIENTS <- &apns2.Client{
 			Token: &token.Token{
 				AuthKey: authKey,
-				KeyID:   config.LocalConfig.Apple.KeyID,
-				TeamID:  config.LocalConfig.Apple.TeamID,
+				KeyID:   common.LocalConfig.Apple.KeyID,
+				TeamID:  common.LocalConfig.Apple.TeamID,
 			},
 			HTTPClient: &http.Client{
 				Transport: &http2.Transport{
@@ -64,11 +64,11 @@ func CreateAPNSClient(maxClientCount int) {
 		}
 	}
 
-	log.Info(fmt.Sprintf("init %s apns client success...\n", selectPushMode()))
+	log.Println(fmt.Sprintf("init %s apns client success...\n", selectPushMode()))
 }
 
 func selectPushMode() string {
-	if config.LocalConfig.Apple.Develop {
+	if common.LocalConfig.Apple.Develop {
 		return apns2.HostDevelopment
 	} else {
 		return apns2.HostProduction

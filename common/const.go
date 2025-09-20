@@ -1,4 +1,4 @@
-package model
+package common
 
 const (
 	Category         = "category"
@@ -29,4 +29,16 @@ const (
 	MD           = "md"          // 是否是markdown格式（简写）
 	CurrentIndex = "index"       // index
 	TotalCount   = "count"       // count
+
+	UserName = "username"
+	Password = "password"
+)
+
+const (
+	HeaderContentType   = "Content-Type"
+	HeaderUserAgent     = "User-Agent"
+	MIMEImageJpeg       = "image/jpeg"
+	MIMEImagePng        = "image/png"
+	MIMEImageSvg        = "image/svg+xml"
+	MIMEApplicationJSON = "application/json"
 )

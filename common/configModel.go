@@ -1,7 +1,13 @@
-package model
+package common
 
 import (
+	"log"
+	"os"
 	"time"
+
+	"github.com/knadh/koanf/parsers/yaml"
+	"github.com/knadh/koanf/providers/file"
+	"github.com/knadh/koanf/v2"
 )
 
 type Config struct {
@@ -47,7 +53,26 @@ type Apple struct {
 	Develop        bool   `mapstructure:"develop" json:"develop" yaml:"develop" koanf:"develop"`
 }
 
-func (global *Config) SetConfig(conf Config) {
+func (global *Config) SetConfig(configPath string) {
+
+	var conf Config
+
+	if _, err := os.Stat(configPath); err != nil {
+		return
+	}
+
+	ko := koanf.New(".")
+	// Load JSON common.
+	if err := ko.Load(file.Provider(configPath), yaml.Parser()); err != nil {
+		log.Fatalf("error loading common: %v", err)
+		return
+	}
+
+	if err := ko.Unmarshal("", &conf); err != nil {
+		log.Fatal(err)
+		return
+	}
+
 	// 检查System字段
 	if len(conf.System.User) > 0 {
 		global.System.User = conf.System.User

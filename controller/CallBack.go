@@ -1,12 +1,12 @@
 package controller
 
 import (
-	"NoLetServer/model"
-	"NoLetServer/push"
+	"log"
 	"sync"
 	"time"
 
-	"github.com/gofiber/fiber/v2/log"
+	"github.com/sunvc/NoLetS/common"
+	"github.com/sunvc/NoLetS/push"
 	"github.com/sunvc/apns2"
 )
 
@@ -20,15 +20,15 @@ func CirclePush() {
 		defer ticker.Stop()
 
 		for range ticker.C {
-			log.Info("开始检查未推送数据")
+			log.Println("开始检查未推送数据")
 			NotPushedDataList.Range(func(key, value any) bool {
-				data1, ok := value.(*model.NotPushedData)
+				data1, ok := value.(*common.NotPushedData)
 				if !ok {
 					NotPushedDataList.Delete(key) // 类型异常也清除
 					return true
 				}
 
-				now := model.DateNow()
+				now := common.DateNow()
 
 				// 超过 24 小时未成功推送，直接清除
 				if now.Sub(data1.LastPushDate) > 24*time.Hour {
@@ -55,19 +55,19 @@ func CirclePush() {
 }
 
 // UpdateNotPushedData 更新已有记录，若不存在则添加
-func UpdateNotPushedData(id string, params *model.ParamsResult, pushType apns2.EPushType) {
+func UpdateNotPushedData(id string, params *common.ParamsResult, pushType apns2.EPushType) {
 	if val, ok := NotPushedDataList.Load(id); ok {
-		res := val.(*model.NotPushedData)
-		res.LastPushDate = model.DateNow()
+		res := val.(*common.NotPushedData)
+		res.LastPushDate = common.DateNow()
 		res.Count++
 		res.Params = params
 		res.PushType = pushType
-		NotPushedDataList.Store(id, model.Success) // 可省略，但保持一致性
+		NotPushedDataList.Store(id, common.Success) // 可省略，但保持一致性
 	} else {
-		NotPushedDataList.Store(id, &model.NotPushedData{
+		NotPushedDataList.Store(id, &common.NotPushedData{
 			ID:           id,
-			CreateDate:   model.DateNow(),
-			LastPushDate: model.DateNow(),
+			CreateDate:   common.DateNow(),
+			LastPushDate: common.DateNow(),
 			Count:        1,
 			Params:       params,
 			PushType:     pushType,

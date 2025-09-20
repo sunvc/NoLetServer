@@ -1,11 +1,11 @@
-package model
+package common
 
 import (
 	"fmt"
 	"time"
 )
 
-type CommonResp struct {
+type BaseResp struct {
 	Code      int         `json:"code"`
 	Message   string      `json:"message"`
 	Data      interface{} `json:"data,omitempty"`
@@ -14,13 +14,13 @@ type CommonResp struct {
 
 // for the fast return Success result
 
-func Success(data ...interface{}) CommonResp {
+func Success(data ...interface{}) BaseResp {
 	var result interface{}
 
 	if len(data) > 0 {
 		result = data[0]
 	}
-	return CommonResp{
+	return BaseResp{
 		Code:      200,
 		Message:   "success",
 		Data:      result,
@@ -30,8 +30,8 @@ func Success(data ...interface{}) CommonResp {
 
 // for the fast return Failed result
 
-func Failed(code int, message string, args ...interface{}) CommonResp {
-	return CommonResp{
+func Failed(code int, message string, args ...interface{}) BaseResp {
+	return BaseResp{
 		Code:      code,
 		Message:   fmt.Sprintf(message, args...),
 		Timestamp: DateNow().Unix(),
@@ -40,14 +40,14 @@ func Failed(code int, message string, args ...interface{}) CommonResp {
 
 // for the fast return result with custom data
 
-func BaseRes(code int, message string, data ...interface{}) CommonResp {
+func BaseRes(code int, message string, data ...interface{}) BaseResp {
 	var result interface{}
 
 	if len(data) > 0 {
 		result = data[0]
 	}
 
-	return CommonResp{
+	return BaseResp{
 		Code:      code,
 		Message:   message,
 		Data:      result,
@@ -58,7 +58,6 @@ func BaseRes(code int, message string, data ...interface{}) CommonResp {
 type DeviceInfo struct {
 	Key   string `json:"key"`
 	Token string `json:"token"`
-	Voice bool   `json:"voice"`
 }
 
 func DateNow() time.Time {

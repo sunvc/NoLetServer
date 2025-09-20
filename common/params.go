@@ -1,15 +1,14 @@
-package model
+package common
 
 import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"net/url"
+	"net/http"
 	"strings"
 	"unicode/utf8"
 
-	"github.com/gofiber/fiber/v2"
-
+	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"github.com/wk8/go-ordered-map/v2"
 )
@@ -34,7 +33,7 @@ type ParamsResult struct {
 //
 // 返回:
 //   - *ParamsResult: 初始化后的参数结果对象
-func NewParamsResult(c *fiber.Ctx) *ParamsResult {
+func NewParamsResult(c *gin.Context) *ParamsResult {
 	main := &ParamsResult{
 		Params:  orderedmap.New[string, interface{}](),
 		Results: []*ParamsMap{},
@@ -45,7 +44,6 @@ func NewParamsResult(c *fiber.Ctx) *ParamsResult {
 	main.SetDefault()
 	main.IsNan = ParamsNan(main)
 	results, err := SplitPayloadIfExceedsLimit(main.Params)
-
 	if err == nil {
 		main.Results = results
 	}
@@ -64,13 +62,20 @@ func NewParamsResult(c *fiber.Ctx) *ParamsResult {
 		}
 
 	}
+
+	resultKeys = FilterShortStrings(resultKeys, 5)
 	main.Keys = Unique[string](resultKeys)
 
+	var tokens []string
 	if token, ok := main.Params.Get(DeviceToken); ok {
 		if val, oka := token.(string); oka && len(val) > 10 {
-			main.Tokens = append(main.Tokens, val)
+			tokens = append(tokens, val)
 		}
 	}
+
+	tokens = FilterShortStrings(tokens, 5)
+	
+	main.Tokens = tokens
 
 	return main
 }
@@ -160,61 +165,58 @@ func (p *ParamsResult) SetDefault() {
 // 3. 处理POST请求的表单数据和JSON数据
 // 4. 对参数进行便捷处理
 // 5. 将处理后的参数保存到有序映射中
-func (p *ParamsResult) HandlerParamsToMapOrder(c *fiber.Ctx) {
+func (p *ParamsResult) HandlerParamsToMapOrder(c *gin.Context) {
 	result := orderedmap.New[string, interface{}]()
 
 	// 判断是否是管理员
-
+	host := GetClientHost(c)
 	if Admin(c) {
-
-		if c.Secure() {
-			result.Set(Host, "https://"+string(c.Request().Host()))
-		} else {
-			result.Set(Host, "http://"+string(c.Request().Host()))
-		}
+		result.Set(Host, host)
 	}
 	// 兼容旧版本
-	result.Set(Callback, string(c.Request().Host()))
+	result.Set(Callback, host)
 
-	// Fiber 路径参数
-	// "/:deviceKey/:title/:subtitle/:body"
-	if value := c.Params(DeviceKey); value != "" {
+	getDeviceKey := func(value string) {
 		deviceKeys := strings.Split(value, ",")
-		if len(deviceKeys) > 0 {
-			result.Set(DeviceKeys, value)
-		}
-		result.Set(DeviceKey, value)
-	}
-	if value := c.Params(Title); value != "" {
-		if value1, err := url.QueryUnescape(value); err == nil {
-			result.Set(Title, value1)
+		if len(deviceKeys) > 1 {
+			result.Set(DeviceKeys, deviceKeys)
+		} else {
+			result.Set(DeviceKey, value)
 		}
 	}
-	if value := c.Params(Subtitle); value != "" {
-		if value1, err := url.QueryUnescape(value); err == nil {
-			result.Set(Subtitle, value1)
-		}
-	}
-	if value := c.Params(Body); value != "" {
-		if value1, err := url.QueryUnescape(value); err == nil {
-			result.Set(Body, value1)
-		}
+
+	switch len(c.Params) {
+	case 1:
+		getDeviceKey(c.Params[0].Value)
+	case 2:
+		getDeviceKey(c.Params[0].Value)
+		result.Set(Body, c.Params[1].Value)
+	case 3:
+		getDeviceKey(c.Params[0].Value)
+		result.Set(Title, c.Params[1].Value)
+		result.Set(Body, c.Params[2].Value)
+	case 4:
+		getDeviceKey(c.Params[0].Value)
+		result.Set(Title, c.Params[1].Value)
+		result.Set(Subtitle, c.Params[2].Value)
+		result.Set(Body, c.Params[3].Value)
 	}
 
 	// parse query args (medium priority)
 	{
 		var keys []string
-
-		c.Request().URI().QueryArgs().All()(func(key, value []byte) bool {
-			lowKey := p.NormalizeKey(string(key))
-			if lowKey == DeviceKey {
-				keys = append(keys, string(value))
-			} else {
-				result.Set(lowKey, string(value))
+		var params = c.Request.URL.Query()
+		for key, values := range params {
+			lowKey := p.NormalizeKey(key)
+			if len(values) > 0 {
+				if lowKey == DeviceKey {
+					keys = append(keys, values...)
+				} else {
+					result.Set(lowKey, values[0])
+				}
 			}
 
-			return true
-		})
+		}
 
 		if keysNum := len(keys); keysNum > 0 {
 			if keysNum == 1 {
@@ -225,24 +227,25 @@ func (p *ParamsResult) HandlerParamsToMapOrder(c *fiber.Ctx) {
 		}
 	}
 
-	c.Request().URI().QueryArgs().All()
-
 	// POST Body
-	if c.Method() == fiber.MethodPost {
-		contentType := c.Get(fiber.HeaderContentType)
+	if c.Request.Method == http.MethodPost {
 
-		if strings.HasPrefix(contentType, fiber.MIMEApplicationJSON) {
+		contentType := c.Request.Header.Get("Content-Type")
+		if strings.HasPrefix(contentType, "application/json") {
 			var jsonData map[string]interface{}
-			if err := c.BodyParser(&jsonData); err == nil {
+			err := c.ShouldBindBodyWithJSON(&jsonData)
+			if err == nil {
 				for k, v := range jsonData {
 					result.Set(p.NormalizeKey(k), v)
 				}
 			}
 		} else {
-			// 获取单个表单字段
-			c.Request().PostArgs().VisitAll(func(key, value []byte) {
-				result.Set(p.NormalizeKey(string(key)), string(value))
-			})
+			err := c.Request.ParseForm()
+			if err == nil {
+				for k, v := range c.Request.PostForm {
+					result.Set(p.NormalizeKey(k), v)
+				}
+			}
 		}
 	}
 
@@ -351,6 +354,7 @@ func SplitPayloadIfExceedsLimit(basePayload *ParamsMap) ([]*ParamsMap, error) {
 	// 复制 payload 并去掉 body 字段，计算剩余占用字节
 	base := copyPayload(basePayload)
 	base.Delete(Body)
+
 	baseJson, _ := json.Marshal(orderedToMap(base))
 	baseSize := len(baseJson)
 
@@ -424,18 +428,5 @@ func splitByUTF8Bytes(s string, maxBytes int) []string {
 		result = append(result, s[start:])
 	}
 
-	return result
-}
-
-func Unique[T comparable](list []T) []T {
-	seen := make(map[T]struct{})
-	result := make([]T, 0, len(list))
-
-	for _, v := range list {
-		if _, ok := seen[v]; !ok {
-			seen[v] = struct{}{}
-			result = append(result, v)
-		}
-	}
 	return result
 }

@@ -1,42 +1,41 @@
 package push
 
 import (
-	"NoLetServer/config"
-	"NoLetServer/model"
 	"fmt"
+	"log"
 	"sync"
 	"time"
 
-	"github.com/gofiber/fiber/v2/log"
+	"github.com/sunvc/NoLetS/common"
 	"github.com/sunvc/apns2"
 	"github.com/sunvc/apns2/payload"
 )
 
 // Push message to APNs server
-func Push(params *model.ParamsMap, pushType apns2.EPushType, token string) error {
+func Push(params *common.ParamsMap, pushType apns2.EPushType, token string) error {
 	pl := payload.NewPayload().MutableContent()
 
 	if pushType == apns2.PushTypeBackground {
 		pl = pl.ContentAvailable()
 	} else {
-		pl = pl.AlertTitle(model.PMGet(params, model.Title)).
-			AlertSubtitle(model.PMGet(params, model.Subtitle)).
-			AlertBody(model.PMGet(params, model.Body)).
-			Sound(model.PMGet(params, model.Sound)).
-			TargetContentID(model.PMGet(params, model.ID)).
-			ThreadID(model.PMGet(params, model.Group)).
-			Category(model.PMGet(params, model.Category))
+		pl = pl.AlertTitle(common.PMGet(params, common.Title)).
+			AlertSubtitle(common.PMGet(params, common.Subtitle)).
+			AlertBody(common.PMGet(params, common.Body)).
+			Sound(common.PMGet(params, common.Sound)).
+			TargetContentID(common.PMGet(params, common.ID)).
+			ThreadID(common.PMGet(params, common.Group)).
+			Category(common.PMGet(params, common.Category))
 	}
 
 	// 添加自定义参数
 	skipKeys := map[string]struct{}{
-		model.DeviceKey:   {},
-		model.DeviceKeys:  {},
-		model.DeviceToken: {},
-		model.Title:       {},
-		model.Body:        {},
-		model.Sound:       {},
-		model.Category:    {},
+		common.DeviceKey:   {},
+		common.DeviceKeys:  {},
+		common.DeviceToken: {},
+		common.Title:       {},
+		common.Body:        {},
+		common.Sound:       {},
+		common.Category:    {},
 	}
 
 	for pair := params.Oldest(); pair != nil; pair = pair.Next() {
@@ -52,10 +51,10 @@ func Push(params *model.ParamsMap, pushType apns2.EPushType, token string) error
 	// 创建并发送通知
 	resp, err := CLI.Push(&apns2.Notification{
 		DeviceToken: token,
-		CollapseID:  fmt.Sprint(params.Value(model.ID)),
-		Topic:       config.LocalConfig.Apple.Topic,
+		CollapseID:  fmt.Sprint(params.Value(common.ID)),
+		Topic:       common.LocalConfig.Apple.Topic,
 		Payload:     pl,
-		Expiration:  model.DateNow().Add(24 * time.Hour),
+		Expiration:  common.DateNow().Add(24 * time.Hour),
 		PushType:    pushType,
 	})
 
@@ -70,7 +69,7 @@ func Push(params *model.ParamsMap, pushType apns2.EPushType, token string) error
 
 }
 
-func BatchPush(params *model.ParamsResult, pushType apns2.EPushType) error {
+func BatchPush(params *common.ParamsResult, pushType apns2.EPushType) error {
 
 	var (
 		errors []error
@@ -87,10 +86,10 @@ func BatchPush(params *model.ParamsResult, pushType apns2.EPushType) error {
 		if len(params.Results) > 0 {
 			for _, param := range params.Results {
 				wg.Add(1)
-				go func(p *model.ParamsMap) {
+				go func(p *common.ParamsMap) {
 					defer wg.Done()
 					if err := Push(p, pushType, token); err != nil {
-						log.Error(err.Error())
+						log.Println(err.Error())
 						mu.Lock()
 						errors = append(errors, err)
 						mu.Unlock()
@@ -99,10 +98,10 @@ func BatchPush(params *model.ParamsResult, pushType apns2.EPushType) error {
 			}
 		} else {
 			wg.Add(1)
-			go func(p *model.ParamsMap) {
+			go func(p *common.ParamsMap) {
 				defer wg.Done()
 				if err := Push(params.Params, pushType, token); err != nil {
-					log.Error(err.Error())
+					log.Println(err.Error())
 					mu.Lock()
 					errors = append(errors, err)
 					mu.Unlock()

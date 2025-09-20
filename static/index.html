@@ -197,20 +197,11 @@
             --radius-md: 16px;
             --radius-lg: 24px;
             --radius-xl: 40px;
-            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-bg: #ffffff1a;
             --glass-border: rgba(255, 255, 255, 0.2);
         }
 
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
-            Roboto, sans-serif;
-            background: var(--background);
-            color: var(--text-primary);
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
+
 
         [data-theme="dark"] {
             --primary-dark: #bde1ff;
@@ -222,12 +213,15 @@
             --card-bg: #2d2d2d;
             --border-color: #404040;
             --gradient-primary: linear-gradient(135deg, #bde1ff, #8cc5ff);
-            --glass-bg: rgba(0, 0, 0, 0.2);
+            --glass-bg: #00000033;
             --glass-border: rgba(255, 255, 255, 0.1);
         }
 
-        [data-theme="dark"] .hero {
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        .icon-color{
+            color: var(--text-primary-c);
+        }
+        [data-theme="dark"] body {
+            background: #202124;
         }
 
         [data-theme="dark"] footer {
@@ -262,6 +256,14 @@
                     #40ffef 0%,
                     rgba(0, 242, 254, 0.7) 100%
             );
+
+            margin: 0;
+            padding: 0;
+            font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+            Roboto, sans-serif;
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
         }
 
         .container {
@@ -282,6 +284,8 @@
             z-index: 1000;
             border-bottom: 3px solid var(--glass-border);
         }
+
+
 
         .nav {
             display: flex;
@@ -858,6 +862,8 @@
             }
         }
 
+        
+
     </style>
 </head>
 <body>
@@ -867,7 +873,7 @@
 <div class="main-content" id="mainContent">
     <header>
         <nav class="nav">
-            <a href="/static" class="logo">
+            <a href="/" class="logo">
                 <svg width="40" height="40" style="color: red">
                     <use href="#noletLogo"></use>
                 </svg>
@@ -934,7 +940,7 @@
         <div class="container" style="padding-top: 70px">
             <div class="features-grid">
                 <div class="feature-card" data-aos="fade-up" data-aos-delay="150">
-                    <div class="feature-icon"><i class="bi bi-robot"></i></div>
+                    <div class="feature-icon"><i class="bi bi-robot icon-color"></i></div>
                     <h3>Smart AI Processing</h3>
                     <p>
                         Automatic summarization, translation, content optimization,
@@ -942,21 +948,21 @@
                     </p>
                 </div>
                 <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
-                    <div class="feature-icon"><i class="bi bi-shield-lock"></i></div>
+                    <div class="feature-icon"><i class="bi bi-shield-lock icon-color"></i></div>
                     <h3>End-to-End Encryption</h3>
                     <p>
                         AES-256 encrypted transmission, ensuring absolute data security
                     </p>
                 </div>
                 <div class="feature-card" data-aos="fade-up" data-aos-delay="250">
-                    <div class="feature-icon"><i class="bi bi-file-text"></i></div>
+                    <div class="feature-icon"><i class="bi bi-file-text icon-color"></i></div>
                     <h3>Long Message Processing</h3>
                     <p>
                         Smart segmentation and merging, supporting content of any length
                     </p>
                 </div>
                 <div class="feature-card" data-aos="fade-up" data-aos-delay="300">
-                    <div class="feature-icon"><i class="bi bi-gear"></i></div>
+                    <div class="feature-icon"><i class="bi bi-gear icon-color" ></i></div>
                     <h3>Custom Server</h3>
                     <p>
                         Support for private deployment, flexible push rule configuration
@@ -969,10 +975,10 @@
     <footer id="about">
         <div class="footer-brand">
             <div class="footer-logo">
-                <svg width="40" height="40"  style="color: #00ffda">
+                <svg width="40" height="40"  style="color: #00b7ff">
                     <use href="#noletLogo"></use>
                 </svg>
-                <span>无字书</span>
+                <span style="padding-left: 20px">NoLet</span>
             </div>
         </div>
 

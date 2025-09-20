@@ -1,8 +1,6 @@
 package database
 
-import (
-	"NoLetServer/config"
-)
+import "github.com/sunvc/NoLetS/common"
 
 var DB Database
 
@@ -16,11 +14,11 @@ type Database interface {
 }
 
 func InitDatabase() {
-	if dsn := config.LocalConfig.System.DSN; len(dsn) > 10 {
+	if dsn := common.LocalConfig.System.DSN; len(dsn) > 10 {
 		if database, err := NewMySQL(dsn); err == nil {
 			DB = database
 			return
 		}
 	}
-	DB = NewBboltdb(config.BaseDir())
+	DB = NewBboltdb(common.BaseDir())
 }

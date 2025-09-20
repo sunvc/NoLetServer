@@ -1,60 +1,63 @@
 package controller
 
 import (
-	"NoLetServer/config"
-	"NoLetServer/database"
-	"NoLetServer/model"
 	"net/http"
 
-	"github.com/gofiber/fiber/v2"
+	"github.com/gin-gonic/gin"
+	"github.com/sunvc/NoLetS/common"
+	"github.com/sunvc/NoLetS/database"
 )
 
-// RegisterController 处理设备注册请求
+// Register 处理设备注册请求
 // 支持 GET 和 POST 两种请求方式:
 // GET: 检查设备key是否存在
 // POST: 注册新的设备token
-func RegisterController(c *fiber.Ctx) error {
-	if c.Method() == fiber.MethodGet {
-		deviceKey := c.Params("deviceKey")
+func Register(c *gin.Context) {
+	if c.Request.Method == "GET" {
+		deviceKey := c.Param("deviceKey")
 		if deviceKey == "" {
-			return c.JSON(model.Failed(http.StatusBadRequest, "device key is empty"))
+			c.JSON(http.StatusOK, common.Failed(http.StatusBadRequest, "device key is empty"))
+			return
 		}
 		if database.DB.KeyExists(deviceKey) {
-			return c.JSON(model.Success())
+			c.JSON(http.StatusOK, common.Success())
+			return
 		} else {
-			auth := model.Admin(c)
+			admin, ok := c.Get("admin")
 
-			if auth {
+			if ok && admin.(bool) {
 				_, err := database.DB.SaveDeviceTokenByKey(deviceKey, "")
 				if err != nil {
-
-					return c.JSON(model.Failed(http.StatusBadRequest, "device key is not exist"))
+					c.JSON(http.StatusOK, common.Failed(http.StatusBadRequest, "device key is not exist"))
+					return
 				}
-
-				return c.JSON(model.Success())
+				c.JSON(http.StatusOK, common.Success())
+				return
 			}
 
-			return c.JSON(model.Failed(http.StatusBadRequest, "device key is not exist"))
+			c.JSON(http.StatusOK, common.Failed(http.StatusBadRequest, "device key is not exist"))
 		}
+		return
 	}
 
 	var err error
-	var device = new(model.DeviceInfo)
-	device.Voice = config.LocalConfig.System.Voice
+	var device common.DeviceInfo
 
-	if err = c.BodyParser(&device); err != nil {
-		return c.JSON(model.Failed(http.StatusBadRequest, "failed to get device token: %v", err))
+	if err = c.BindJSON(&device); err != nil {
+		c.JSON(http.StatusOK, common.Failed(http.StatusBadRequest, "failed to get device token: %v", err))
+		return
 	}
 
 	if device.Token == "" {
-		return c.JSON(model.Failed(http.StatusBadRequest, "deviceToken is empty"))
+		c.JSON(http.StatusOK, common.Failed(http.StatusBadRequest, "deviceToken is empty"))
+		return
 	}
 
 	device.Key, err = database.DB.SaveDeviceTokenByKey(device.Key, device.Token)
 
 	if err != nil {
-		return c.JSON(model.Failed(http.StatusInternalServerError, "device registration failed: %v", err))
+		c.JSON(http.StatusOK, common.Failed(http.StatusInternalServerError, "device registration failed: %v", err))
 	}
 
-	return c.JSON(model.Success(device))
+	c.JSON(http.StatusOK, common.Success(device))
 }

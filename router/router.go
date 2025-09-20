@@ -1,49 +1,40 @@
 package router
 
 import (
-	"NoLetServer/config"
-	"NoLetServer/controller"
-
-	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/middleware/monitor"
+	"github.com/gin-gonic/gin"
+	"github.com/sunvc/NoLetS/controller"
 )
 
-func RegisterRoutes(router fiber.Router) {
+func SetupRouter(router *gin.Engine) {
 
-	router.Get("/", controller.HomeController)
-	router.Get("/info", controller.GetInfo)
-	router.Get("/metrics", monitor.New(
-		monitor.Config{Title: config.LocalConfig.System.Name + " Server Metrics"},
-	))
+	router.GET("/", controller.Home)
+	router.GET("/info", controller.Info)
+	// App内部使用
+	router.GET("/ping", controller.Ping)
+	router.GET("/health", controller.Health)
+
 	// 注册
-	router.Post("/register", CheckUserAgent, controller.RegisterController)
-	router.Get(`/register/:devicekey<regex(^[A-Za-z0-9]{5,30}$)>`, CheckUserAgent, controller.RegisterController)
+	router.GET("/register/:deviceKey", CheckUserAgent(), controller.Register)
+	router.POST("/register", CheckUserAgent(), controller.Register)
 
-	router.Get("/ping", controller.Ping)
+	router.GET("/upload", controller.Upload)
+	router.POST("/upload", controller.Upload)
 
-	router.Get("/health", func(c *fiber.Ctx) error { return c.SendStatus(fiber.StatusOK) })
-	router.Get("/nolet", func(c *fiber.Ctx) error { return c.SendStatus(fiber.StatusOK) })
 	// 推送请求
-	router.Post("/push", controller.BaseController)
-
-	router.Get("/upload*", controller.UploadController)
-	router.Post("/upload", controller.UploadController)
-	router.Get("/image/:filename", controller.GetImage)
-	router.Get("/img/:filename", controller.GetImage)
-
+	router.POST("/push", controller.BasePush)
+	// 获取设备Token
+	router.GET("/:deviceKey/token", controller.GetDeviceToken)
 	// title subtitle body
-	router.Get(`/:devicekey<regex(^[A-Za-z0-9]{5,30}$)>/:title/:subtitle/:body`, controller.BaseController)
-	router.Post(`/:devicekey<regex(^[A-Za-z0-9]{5,30}$)>/:title/:subtitle/:body`, controller.BaseController)
+	router.GET("/:deviceKey/:params1/:params2/:params3", controller.BasePush)
+	router.POST("/:deviceKey/:params1/:params2/:params3", controller.BasePush)
 	// title body
-	router.Get(`/:devicekey<regex(^[A-Za-z0-9]{5,30}$)>/:title/:body`, controller.BaseController)
-	router.Post(`/:deviceKey<regex(^[A-Za-z0-9]{5,30}$)>/:title/:body`, controller.BaseController)
+	router.GET("/:deviceKey/:params1/:params2", controller.BasePush)
+	router.POST("/:deviceKey/:params1/:params2", controller.BasePush)
 	// body
-	router.Get(`/:devicekey<regex(^[A-Za-z0-9]{5,30}$)>/:body`, controller.BaseController)
-	router.Post(`/:devicekey<regex(^[A-Za-z0-9]{5,30}$)>/:body`, controller.BaseController)
+	router.GET("/:deviceKey/:params1", controller.BasePush)
+	router.POST("/:deviceKey/:params1", controller.BasePush)
+
 	// 参数化的推送
-	router.Get(`/:devicekey<regex(^[A-Za-z0-9]{5,30}$)>`, controller.BaseController)
-	router.Post(`/:devicekey<regex(^[A-Za-z0-9]{5,30}$)>`, controller.BaseController)
-
-	router.Get("/:file", controller.Media)
-
+	router.GET("/:deviceKey", CheckDotParamMiddleware(), controller.BasePush)
+	router.POST("/:deviceKey", controller.BasePush)
 }
