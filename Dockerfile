@@ -18,7 +18,7 @@ RUN go mod tidy && go mod verify && go mod download
 
 RUN echo "VERSION=${VERSION} BUILD_DATE=${BUILD_DATE} COMMIT_ID=${COMMIT_ID}"
 
-RUN go build -v -x -ldflags="-X main.version=${VERSION} -X main.buildDate=${BUILD_DATE} -X main.commitID=${COMMIT_ID}" -o main main.go
+RUN go build -v -x -tags "sonic avx" -ldflags="-X main.version=${VERSION} -X main.buildDate=${BUILD_DATE} -X main.commitID=${COMMIT_ID}" -o main main.go
 FROM alpine
 
 WORKDIR /app
