@@ -1,0 +1,40 @@
+system:
+  user: ""
+  password: ""
+  addr: "0.0.0.0:8080"
+  url_prefix: ""
+  data: "./data"
+  name: "NoLet"
+  dsn: ""
+  cert: ""
+  key: ""
+  reduce_memory_usage: false
+  proxy_header: ""
+  max_batch_push_count: -1
+  max_apns_client_count: 1
+  concurrency: 262144   # 256 * 1024
+  read_timeout: 3s
+  write_timeout: 3s
+  idle_timeout: 10s
+  debug: true
+  version: ""
+  build_date: ""
+  commitID: ""
+  expired: 0
+  icp_info: ""
+  time_zone: "UTC"
+  voice: true
+  auth_ids: []
+
+apple:
+  apnsPrivateKey: |-
+    -----BEGIN PRIVATE KEY-----
+    MIGTAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBHkwdwIBAQQgvjopbchDpzJNojnc
+    o7ErdZQFZM7Qxho6m61gqZuGVRigCgYIKoZIzj0DAQehRANCAAQ8ReU0fBNg+sA+
+    ZdDf3w+8FRQxFBKSD/Opt7n3tmtnmnl9Vrtw/nUXX4ldasxA2gErXR4YbEL9Z+uJ
+    REJP/5bp
+    -----END PRIVATE KEY-----
+  topic: "me.uuneo.Meoworld"
+  keyID: "BNY5GUGV38"
+  teamID: "FUWV6U942Q"
+  develop: true

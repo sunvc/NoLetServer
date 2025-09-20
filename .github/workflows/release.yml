@@ -1,0 +1,52 @@
+name: goreleaser
+
+on:
+  push:
+    tags:
+      - '*'
+
+permissions:
+  contents: write
+
+jobs:
+  goreleaser:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: git fetch --force --tags
+      - uses: actions/setup-go@v4
+        with:
+          go-version: '>=1.25.0'
+          cache: true
+      - uses: goreleaser/goreleaser-action@v4
+        with:
+          distribution: goreleaser
+          version: latest
+          args: release --clean
+        env:
+          GITHUB_TOKEN: ${{ secrets.ACTION_TOKEN }}
+          # Add program usage instructions, this information will be displayed on the Release page
+          DESCRIPTION: |
+            ## NoLetServer Usage Instructions
+            
+            ### Basic Usage
+            ```bash
+            # Basic run command
+            ./NoLetServer
+            
+            # Use debug mode
+            ./NoLetServer --debug
+            
+            # Specify configuration file
+            ./NoLetServer --config config.yaml
+            ```
+            
+            ### Common Parameters
+            - `--addr`: Server listening address, default is 0.0.0.0:8080
+            - `--url-prefix`: Service URL prefix, default is /
+            - `--dir`: Data storage directory, default is ./data
+            - `--dsn`: MySQL database connection string
+            - `--debug`: Enable debug mode
+            - `--config, -c`: Specify configuration file path

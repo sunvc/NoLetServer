@@ -1,0 +1,1129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>无字书 - Smart Message Push</title>
+    <link rel="icon" href="logo.png" />
+    <link rel="apple-touch-icon" href="logo.png"/>
+    <meta name="theme-color" content="#4D6BFE"/>
+
+    <meta property="og:title" content="无字书 - Smart Message Push"/>
+    <meta
+            name="description"
+            content="无字书 - AI-driven message push platform, supporting end-to-end encryption and custom servers"
+    />
+    <meta
+            property="og:description"
+            content="无字书 - AI-driven message push platform, supporting end-to-end encryption and custom servers"
+    />
+    <meta property="og:url" content="logo.png">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="og.png">
+
+    <meta name="twitter:card" content="summary"/>
+    <!-- Add more modern fonts and icon libraries -->
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:wght@300;400;700&display=swap"
+            rel="stylesheet"
+    />
+    <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css"
+    />
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
+    <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css"
+    />
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:wght@300;400;700&display=swap"); /* Splash Screen */
+
+        @keyframes bounce {
+            0%,
+            20%,
+            53%,
+            80%,
+            100% {
+                transform: translateY(0);
+                animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+            }
+            40%,
+            43% {
+                transform: translateY(-15px);
+                animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
+            }
+            70% {
+                transform: translateY(-8px);
+                animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
+            }
+            90% {
+                transform: translateY(-4px);
+            }
+        }
+
+        @keyframes float {
+            0%,
+            100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-10px) rotate(2deg);
+            }
+        }
+
+        @keyframes wiggle {
+            0%,
+            7% {
+                transform: rotateZ(0);
+            }
+            15% {
+                transform: rotateZ(-5deg);
+            }
+            20% {
+                transform: rotateZ(3deg);
+            }
+            25% {
+                transform: rotateZ(-3deg);
+            }
+            30% {
+                transform: rotateZ(2deg);
+            }
+            35% {
+                transform: rotateZ(-1deg);
+            }
+            40%,
+            100% {
+                transform: rotateZ(0);
+            }
+        }
+
+        @keyframes glow {
+            0%,
+            100% {
+                box-shadow: 0 0 20px rgba(77, 107, 254, 0.3);
+            }
+            50% {
+                box-shadow: 0 0 30px rgba(77, 107, 254, 0.6),
+                0 0 40px rgba(77, 107, 254, 0.4);
+            }
+        }
+
+        @keyframes flyInFromTop {
+            0% {
+                transform: translateY(-100px);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes flyInFromLeft {
+            0% {
+                transform: scale(0.5) translateX(-200px);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1) translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes flyInFromRight {
+            0% {
+                transform: scale(0.5) translateX(200px);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1) translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes flyInFromBottom {
+            0% {
+                transform: translateY(100px);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .main-content {
+            transition: opacity 0.5s ease-in;
+        }
+
+        :root {
+            --primary-dark: #1c3344;
+            --primary-blue: #4d6bfe;
+            --accent-teal: #2498ff;
+            --text-primary: #1a1a1a;
+            --text-primary-c: #ffffff;
+            --text-secondary: #666666;
+            --text-light: #999999;
+            --background: #fcfcfa;
+            --card-bg: #ffffff;
+            --border-color: #e6e6e6;
+            --gradient-primary: linear-gradient(
+                    135deg,
+                    var(--primary-dark),
+                    #2d4b65
+            );
+            --gradient-blue: linear-gradient(
+                    135deg,
+                    var(--primary-blue),
+                    var(--accent-teal)
+            );
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.12);
+            --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.15);
+            --radius-sm: 8px;
+            --radius-md: 16px;
+            --radius-lg: 24px;
+            --radius-xl: 40px;
+            --glass-bg: #ffffff1a;
+            --glass-border: rgba(255, 255, 255, 0.2);
+        }
+
+
+
+        [data-theme="dark"] {
+            --primary-dark: #bde1ff;
+            --text-primary: #ffffff;
+            --text-primary-c: #000000;
+            --text-secondary: #b0b0b0;
+            --text-light: #888888;
+            --background: #1a1a1a;
+            --card-bg: #2d2d2d;
+            --border-color: #404040;
+            --gradient-primary: linear-gradient(135deg, #bde1ff, #8cc5ff);
+            --glass-bg: #00000033;
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        .icon-color{
+            color: var(--text-primary-c);
+        }
+        [data-theme="dark"] body {
+            background: #202124;
+        }
+
+        [data-theme="dark"] footer {
+            background: #0f0f0f;
+        }
+
+        /* 在线链接服务仅供平台体验和调试使用，平台不承诺服务的稳定性，企业客户需下载字体包自行发布使用并做好备份。 */
+        @font-face {
+            font-family: "阿里妈妈方圆体 VF Regular";
+            src: url("//at.alicdn.com/wf/webfont/FlSsOjbNJAnW/kXFHsnDIXVua.woff2") format("woff2"),
+            url("//at.alicdn.com/wf/webfont/FlSsOjbNJAnW/4rsCVwGtZjL7.woff") format("woff");
+            font-variation-settings: "BEVL" 1, "wght" 200;
+            font-display: swap;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "阿里妈妈方圆体 VF Regular", sans-serif;
+            font-variation-settings: "wght" 400, "BEVL" 1;
+        }
+
+        body {
+            line-height: 1.6;
+            color: var(--text-primary);
+
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background: linear-gradient(
+                    0deg,
+                    #40ffef 0%,
+                    rgba(0, 242, 254, 0.7) 100%
+            );
+
+            margin: 0;
+            padding: 0;
+            font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+            Roboto, sans-serif;
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1500px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        /* Header */
+        header {
+            padding: 1.5rem 0;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            border-bottom: 3px solid var(--glass-border);
+        }
+
+
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 100vw;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.375rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .github-link {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md);
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            font-size: 1.25rem;
+            text-decoration: none;
+            color: var(--text-primary);
+        }
+
+        .github-link:hover {
+            background: var(--primary-blue);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .theme-toggle {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md);
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            font-size: 1.25rem;
+        }
+
+        .theme-toggle:hover {
+            background: var(--primary-dark);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        [data-theme="dark"] .theme-toggle {
+            background: var(--glass-bg);
+            border-color: var(--glass-border);
+        }
+
+        [data-theme="dark"] .theme-toggle:hover {
+            background: var(--primary-dark);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 180px 0 120px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            animation: gradientAnimation 15s ease infinite;
+        }
+
+        @keyframes gradientAnimation {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 100%;
+            height: 200%;
+            pointer-events: none;
+        }
+
+        .hero::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            right: 0;
+            width: 70%;
+            height: 100%;
+            background-image: url({{.LOGOSVG}});
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-position: center right;
+            transform: translateY(-50%);
+            pointer-events: none;
+            z-index: -1;
+            animation: floatLogo 8s ease-in-out infinite ;
+            perspective: 1000px;  /* 值越小，透视效果越强 */
+            display: inline-block;
+            transform-style: preserve-3d;
+            transform-origin: 0 100%;
+
+        }
+
+        @keyframes floatLogo {
+            0% {
+                transform: rotate3d(1, -1, 0, 0deg) translateY(-50%) ;
+            }
+            50% {
+                transform: rotate3d(1, -1, 0, 360deg) translateY(-50%) ;
+            }
+            60% {
+                transform: rotate3d(1, -1, 0, 360deg) translateY(-50%)  ;
+            }
+            70% {
+                transform: rotate3d(1, -1, 0, 360deg) translateY(-50%)  ;
+            }
+            80% {
+                transform: rotate3d(1, -1, 0, 360deg) translateY(-50%)  ;
+            }
+            100% {
+                transform: rotate3d(1, -1, 0, 360deg) translateY(-50%)  ;
+            }
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--primary-dark);
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+        }
+
+        .hero p {
+            font-size: 1.375rem;
+            margin-bottom: 3rem;
+            color: var(--text-secondary);
+            max-width: 100vw;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+            font-weight: 400;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        /* New Hero Layout */
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 4rem;
+            align-items: center;
+            margin: 0 auto;
+        }
+
+        .hero-qr {
+            text-align: center;
+        }
+
+        .qr-code {
+            width: 200px;
+            height: 200px;
+            background: var(--glass-bg);
+            border-radius: var(--radius-xl);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            padding: 1rem;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .qr-code:hover {
+            transform: scale(1.05) rotate(2deg);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .hero-qr p {
+            color: var(--text-secondary);
+            font-size: 1.125rem;
+            font-weight: 500;
+            margin: 0;
+        }
+
+        .hero-text {
+            text-align: left;
+        }
+
+        .hero-text h1 {
+            margin-left: 0;
+            margin-right: 0;
+            text-align: left;
+        }
+
+        .hero-text p {
+            margin-left: 0;
+            margin-right: 0;
+            text-align: left;
+            max-width: none;
+        }
+
+        .hero-text .hero-buttons {
+            justify-content: flex-start;
+        }
+
+        .secondary-button {
+            background: transparent;
+            color: var(--primary-dark);
+            padding: 1rem 2rem;
+            border: 2px solid var(--primary-dark);
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .secondary-button:hover {
+            background: var(--primary-dark);
+            color: var(--text-primary-c);
+            transform: translateY(-2px);
+            animation: bounce 0.8s ease, glow 1.2s ease-in-out infinite;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            background: var(--card-bg);
+            padding: 1.5rem 1.25rem;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-md);
+            text-align: center;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            transform: translateY(50px);
+            opacity: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .feature-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: var(--gradient-primary);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary-dark);
+        }
+
+        .feature-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 1rem;
+            background: var(--gradient-primary);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-md);
+        }
+
+        .feature-card:hover .feature-icon {
+            transform: scale(1.15) rotate(5deg);
+            box-shadow: var(--shadow-lg);
+            animation: bounce 0.8s ease, wiggle 1s ease,
+            glow 1.5s ease-in-out infinite;
+        }
+
+        .feature-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+            color: var(--primary-dark);
+            font-weight: 700;
+        }
+
+        .feature-card p {
+            color: var(--text-secondary);
+            line-height: 1.5;
+            font-size: 0.95rem;
+            font-weight: 400;
+            margin-bottom: 0;
+        }
+
+        .download-qr img {
+            width: 180px;
+            height: 180px;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--primary-dark);
+            padding: 15px 2rem;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+        }
+
+        .footer-brand {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .footer-logo img {
+            width: 32px;
+            height: 32px;
+            border-radius: var(--radius-md);
+        }
+
+        .footer-column h4 {
+            color: white;
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-column a {
+            display: block;
+            color: var(--text-light);
+            text-decoration: none;
+            margin-bottom: 0.75rem;
+            transition: color 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .footer-column a:hover {
+            color: white;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-light);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .social-links a:hover {
+            color: white;
+        }
+
+        .social-links svg {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+        }
+
+        .footer-bottom {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .footer-copyright {
+            color: var(--text-light);
+            font-size: 0.875rem;
+            margin: 0 20px;
+        }
+
+        .footer-icp {
+            color: var(--text-light);
+            font-size: 0.875rem;
+            margin: 0;
+            gap: 1rem;
+            display: flex;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1rem;
+            }
+
+            .nav {
+                padding: 0 1rem;
+            }
+
+            .theme-toggle-h img {
+                height: 40px;
+                width: auto;
+            }
+
+            .hero {
+                padding: 120px 0 60px;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+                line-height: 1.2;
+                margin-bottom: 1rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+                padding: 0;
+                line-height: 1.5;
+                margin-bottom: 2rem;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .hero-content {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+                text-align: center;
+            }
+
+            .hero-text {
+                text-align: center;
+            }
+
+            .hero-text h1 {
+                text-align: center;
+            }
+
+            .hero-text p {
+                text-align: center;
+            }
+
+            .hero-text .hero-buttons {
+                justify-content: center;
+            }
+
+            .qr-code {
+                width: 140px;
+                height: 140px;
+                margin: 0 auto 1rem;
+            }
+
+            .hero-qr p {
+                font-size: 1rem;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .feature-card {
+                padding: 2rem 1.5rem;
+                margin: 0 0.5rem;
+            }
+
+            .feature-icon {
+                width: 70px;
+                height: 70px;
+                font-size: 1.8rem;
+            }
+
+            .feature-card h3 {
+                font-size: 1.3rem;
+            }
+
+            .feature-card p {
+                font-size: 1rem;
+            }
+
+            footer {
+                padding: 15px 1rem;
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .footer-brand {
+                justify-content: center;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                gap: 0.5rem;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .footer-column h4 {
+                font-size: 1rem;
+                margin-bottom: 1rem;
+            }
+
+            .footer-column a {
+                font-size: 0.9rem;
+                margin-bottom: 0.5rem;
+            }
+
+            .social-links a {
+                font-size: 0.9rem;
+            }
+        }
+
+        
+
+    </style>
+</head>
+<body>
+
+
+<!-- Main Content -->
+<div class="main-content" id="mainContent">
+    <header>
+        <nav class="nav">
+            <a href="/" class="logo">
+                <svg width="40" height="40" style="color: red">
+                    <use href="#noletLogo"></use>
+                </svg>
+
+                <span>无字书</span>
+            </a>
+
+            <div class="nav-actions">
+                <a
+                        href="https://github.com/sunvc/NoLeterver"
+                        class="github-link"
+                        target="_blank"
+                        aria-label="GitHub Project"
+                >
+                    <i class="bi bi-github"></i>
+                </a>
+                <a
+                        href="https://t.me/PushToMe"
+                        class="github-link"
+                        target="_blank"
+                        aria-label="Telegram Channel"
+                >
+                    <i class="bi bi-telegram"></i>
+                </a>
+                <button
+                        class="theme-toggle"
+                        id="themeToggle"
+                        aria-label="Toggle Theme"
+                >
+                    <span class="theme-icon">🌙</span>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-qr" style="padding-top: 50px">
+                    <div class="qr-code" id="qrcode"></div>
+                    <p>Scan QR code to add server</p>
+                </div>
+                <div class="hero-text">
+                    <h1>Redefining Message Push Experience</h1>
+                    <p>
+                        无字书 A privacy-focused, secure and controllable custom
+                        notification push tool.<br/>
+                        Free, Simple, Secure, Ready to Use
+                    </p>
+
+                    <div class="hero-buttons">
+                        <a
+                                href="https://apps.apple.com/app/id6615073345"
+                                class="secondary-button"
+                        >
+                            <i class="bi bi-apple" style="margin-right: 5px"></i>
+                            App Store
+                        </a>
+                        <a href="{{.DOCS}}" class="secondary-button"> Documentation </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container" style="padding-top: 70px">
+            <div class="features-grid">
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="150">
+                    <div class="feature-icon"><i class="bi bi-robot icon-color"></i></div>
+                    <h3>Smart AI Processing</h3>
+                    <p>
+                        Automatic summarization, translation, content optimization,
+                        improving message quality
+                    </p>
+                </div>
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="feature-icon"><i class="bi bi-shield-lock icon-color"></i></div>
+                    <h3>End-to-End Encryption</h3>
+                    <p>
+                        AES-256 encrypted transmission, ensuring absolute data security
+                    </p>
+                </div>
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="250">
+                    <div class="feature-icon"><i class="bi bi-file-text icon-color"></i></div>
+                    <h3>Long Message Processing</h3>
+                    <p>
+                        Smart segmentation and merging, supporting content of any length
+                    </p>
+                </div>
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="feature-icon"><i class="bi bi-gear icon-color" ></i></div>
+                    <h3>Custom Server</h3>
+                    <p>
+                        Support for private deployment, flexible push rule configuration
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer id="about">
+        <div class="footer-brand">
+            <div class="footer-logo">
+                <svg width="40" height="40"  style="color: #00b7ff">
+                    <use href="#noletLogo"></use>
+                </svg>
+                <span style="padding-left: 20px">NoLet</span>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p class="footer-icp" style="text-align: center">
+                <a
+                        href="https://beian.miit.gov.cn/"
+                        style="color: white; text-decoration: none; font-size: 16px"
+                >{{.ICP}}</a
+                >
+            </p>
+            <p class="footer-copyright" style="text-align: center">
+                &copy; 2024 无字书. All rights reserved.
+            </p>
+        </div>
+    </footer>
+</div>
+
+<div style="display: none">
+    {{.LOGORAW}}
+</div>
+
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Initialize AOS animation library
+        AOS.init({
+            duration: 800,
+            easing: "ease-in-out",
+            once: true,
+            mirror: false,
+        });
+
+        // Get server address
+
+        // Add scroll animation
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: "0px 0px -50px 0px",
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = "1";
+                    entry.target.style.transform = "translateY(0)";
+                }
+            });
+        }, observerOptions);
+
+        // Observe all feature cards
+        document.querySelectorAll(".feature-card").forEach((card) => {
+            card.style.opacity = "0";
+            card.style.transform = "translateY(30px)";
+            card.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+            observer.observe(card);
+        });
+
+        // Mouse movement effect
+        document.addEventListener("mousemove", (e) => {
+            const cards = document.querySelectorAll(".feature-card");
+            cards.forEach((card) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+
+                card.style.setProperty("--mouse-x", `${x}px`);
+                card.style.setProperty("--mouse-y", `${y}px`);
+            });
+        });
+
+        // Enhanced animation effect on mouse hover
+        document
+            .querySelectorAll(".feature-card, .cta-button, .secondary-button")
+            .forEach((element) => {
+                element.addEventListener("mouseenter", () => {
+                    element.style.transform = "scale(1.05) translateY(-5px)";
+                    element.style.boxShadow = "0 20px 40px rgba(0, 0, 0, 0.2)";
+                });
+
+                element.addEventListener("mouseleave", () => {
+                    element.style.transform = "";
+                    element.style.boxShadow = "";
+                });
+            });
+
+        // Random micro-movement effect
+        setInterval(() => {
+            const elements = document.querySelectorAll(".feature-icon, .qr-code");
+            elements.forEach((el) => {
+                if (Math.random() > 0.7) {
+                    el.style.transform = `rotate(${
+                        Math.random() * 4 - 2
+                    }deg) translateY(${Math.random() * 3 - 1.5}px)`;
+                    setTimeout(() => {
+                        el.style.transform = "";
+                    }, 300);
+                }
+            });
+        }, 2000);
+
+        // Theme switching function
+        const themeToggle = document.getElementById("themeToggle");
+        const themeIcon = themeToggle.querySelector(".theme-icon");
+
+        // Check locally stored theme preference
+        const savedTheme = localStorage.getItem("theme");
+        if (savedTheme === "dark") {
+            document.documentElement.setAttribute("data-theme", "dark");
+            themeIcon.textContent = "☀️";
+        }
+
+        themeToggle.addEventListener("click", () => {
+            const currentTheme =
+                document.documentElement.getAttribute("data-theme");
+
+            if (currentTheme === "dark") {
+                document.documentElement.removeAttribute("data-theme");
+                localStorage.setItem("theme", "light");
+                themeIcon.textContent = "🌙";
+            } else {
+                document.documentElement.setAttribute("data-theme", "dark");
+                localStorage.setItem("theme", "dark");
+                themeIcon.textContent = "☀️";
+            }
+        });
+    });
+
+    function generateQRCode() {
+        // Get current server URL
+        const serverUrl = "{{.URL}}";
+
+        // Generate QR code
+        new QRCode(document.getElementById("qrcode"), {
+            text: serverUrl,
+            width: 200,
+            height: 200,
+            colorDark: "#000000",
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.H,
+        });
+    }
+
+    generateQRCode();
+</script>
+</body>
+</html>
